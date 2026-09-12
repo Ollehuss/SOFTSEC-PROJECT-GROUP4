@@ -62,15 +62,17 @@ class UnsafeBashBridgeAppendEOF(WatermarkingMethod):
     
 
     def read_secret(self, pdf, key: str) -> str:
-        """Extract the secret if present.
-           Prints whatever there is after %EOF
-        """
-        cmd = "sed -n '1,/^\(%%EOF\|.*%%EOF\)$/!p' " + str(pdf.resolve())
-        
-        res = subprocess.run(cmd, shell=True, check=True, encoding="utf-8", capture_output=True)
-       
+        """Extract the secret appended after the PDF's final %%EOF marker."""
+        data = load_pdf_bytes(pdf)
+        marker = b"%%EOF"
+        eof_pos = data.rfind(marker)
 
-        return res.stdout
+        if eof_pos == -1:
+            raise SecretNotFoundError("No %%EOF marker found")
+
+        secret_bytes = data[eof_pos + len(marker):]
+
+        return secret_bytes.decode("utf-8").strip()
 
 
 
