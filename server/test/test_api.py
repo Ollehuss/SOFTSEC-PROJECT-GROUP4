@@ -7,3 +7,11 @@ def test_healthz_route():
     assert resp.status_code == 200
     assert resp.is_json
     
+def test_delete_document_rejects_sql_injection():
+    client = app.test_client()
+
+    resp = client.post(
+        "/api/delete-document?id=1%20OR%201=1"
+    )
+
+    assert resp.status_code == 400
