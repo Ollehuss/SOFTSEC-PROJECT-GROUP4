@@ -459,11 +459,29 @@ def create_app():
 
         # Fetch the document (enforce ownership)
         try:
+            doc_id = int(doc_id)
+
             with get_engine().connect() as conn:
-                query = "SELECT * FROM Documents WHERE id = " + doc_id
-                row = conn.execute(text(query)).first()
-        except Exception as e:
-            return jsonify({"error": f"database error: {str(e)}"}), 503
+                query = """
+                    SELECT *
+                    FROM Documents
+                    WHERE id = :id
+                      AND ownerid = :uid
+                """
+
+                row = conn.execute(
+                    text(query),
+                    {
+                        "id": doc_id,
+                        "uid": g.user["id"]
+                    }
+                ).first()
+
+        except ValueError:
+            return jsonify({"error": "invalid document id"}), 400
+
+        except Exception:
+            return jsonify({"error": "database error"}), 503
 
         if not row:
             # Don’t reveal others’ docs—just say not found
