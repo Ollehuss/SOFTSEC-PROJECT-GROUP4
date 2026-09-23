@@ -4,8 +4,9 @@ import hashlib
 import datetime as dt
 from pathlib import Path
 from functools import wraps
+from rmap import RMAPServer, RMAPError
 
-from flask import Flask, jsonify, request, g, send_file
+from flask import Flask, app, app, jsonify, request, g, send_file
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
@@ -37,6 +38,8 @@ def create_app():
     app.config["DB_NAME"] = os.environ.get("DB_NAME", "tatou")
 
     app.config["STORAGE_DIR"].mkdir(parents=True, exist_ok=True)
+
+    
 
     # --- DB engine only (no Table metadata) ---
     def db_url() -> str:
@@ -167,7 +170,7 @@ def create_app():
         if not file or file.filename == "":
             return jsonify({"error": "empty filename"}), 400
 
-        fname = file.filename
+        fname = secure_filename(file.filename)
 
         user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
         user_dir.mkdir(parents=True, exist_ok=True)
@@ -762,6 +765,83 @@ def create_app():
             "method": method,
             "position": position
         }), 201
+
+    app.config["RMAP_SERVER_PUBLIC_KEY"] = os.environ.get(
+    "RMAP_SERVER_PUBLIC_KEY",
+    "./keys/server_pub.asc")
+
+    app.config["RMAP_SERVER_PRIVATE_KEY"] = os.environ.get(
+    "RMAP_SERVER_PRIVATE_KEY",
+    "./keys/server_priv.asc")
+
+    app.config["RMAP_CLIENT_KEYS_DIR"] = os.environ.get(
+    "RMAP_CLIENT_KEYS_DIR",
+    "./keys/clients")
+
+    app.config["RMAP_PASSPHRASE"] = os.environ.get("RMAP_PASSPHRASE") or None
+
+    _rmap_server = None
+
+    def get_rmap_server():
+        nonlocal _rmap_server
+
+        if _rmap_server is None:
+            _rmap_server = RMAPServer(
+                server_public_key_path=app.config["RMAP_SERVER_PUBLIC_KEY"],
+                server_private_key_path=app.config["RMAP_SERVER_PRIVATE_KEY"],
+                passphrase=app.config["RMAP_PASSPHRASE"],
+                linkPrefix=""
+            )
+
+            _rmap_server.loadIdentities(
+                app.config["RMAP_CLIENT_KEYS_DIR"]
+            )
+
+        return _rmap_server
+
+        @app.post("/api/rmap-initiate")
+        def rmap_initiate():
+            payload = request.get_json(silent=True)
+
+            if not isinstance(payload, dict):
+                return jsonify({"error": "JSON object required"}), 400
+
+            try:
+                rmap_server = get_rmap_server()
+
+                identity, response = rmap_server.receiveMsg1(payload)
+
+                return jsonify(response), 200
+
+            except RMAPError as e:
+                return jsonify({"error": str(e)}), 400
+
+            except Exception:
+                app.logger.exception("RMAP initiate failed")
+                return jsonify({"error": "RMAP initiation failed"}), 500
+            
+
+        @app.post("/api/rmap-get-link")
+        def rmap_get_link():
+            payload = request.get_json(silent=True)
+
+            if not isinstance(payload, dict):
+                return jsonify({"error": "JSON object required"}), 400
+
+            try:
+                rmap_server = get_rmap_server()
+
+                identity, link, response = rmap_server.receiveMsg2(payload)
+
+                return jsonify(response), 200
+
+            except RMAPError as e:
+                return jsonify({"error": str(e)}), 400
+
+            except Exception:
+                app.logger.exception("RMAP get-link failed")
+                return jsonify({"error": "RMAP get-link failed"}), 500
+        
 
     return app
     
