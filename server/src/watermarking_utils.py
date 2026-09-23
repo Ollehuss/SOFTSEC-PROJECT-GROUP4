@@ -9,7 +9,6 @@ This module exposes:
 - :func:`explore_pdf`: build a lightweight JSON-serializable tree of PDF
   nodes with deterministic identifiers ("name nodes").
 - :func:`apply_watermark`: run a concrete watermarking method on a PDF.
-- :func:`apply_watermark`: run a concrete watermarking method on a PDF.
 - :func:`read_watermark`: recover a secret using a concrete method.
 - :func:`register_method` / :func:`get_method`: registry helpers.
 
@@ -36,6 +35,9 @@ import json
 import os
 import re
 
+from olles_metadata_watermark import MetadataWatermark
+
+
 from watermarking_method import (
     PdfSource,
     WatermarkingMethod,
@@ -50,7 +52,8 @@ from unsafe_bash_bridge_append_eof import UnsafeBashBridgeAppendEOF
 
 METHODS: Dict[str, WatermarkingMethod] = {
     AddAfterEOF.name: AddAfterEOF(),
-    UnsafeBashBridgeAppendEOF.name: UnsafeBashBridgeAppendEOF()
+    UnsafeBashBridgeAppendEOF.name: UnsafeBashBridgeAppendEOF(),
+    MetadataWatermark.name: MetadataWatermark()
 }
 """Registry of available watermarking methods.
 
@@ -102,7 +105,7 @@ def is_watermarking_applicable(
     method: str | WatermarkingMethod,
     pdf: PdfSource,
     position: str | None = None,
-) -> bytes:
+) -> bool:
     """Apply a watermark using the specified method and return new PDF bytes."""
     m = get_method(method)
     return m.is_watermark_applicable(pdf=pdf, position=position)
