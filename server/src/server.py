@@ -799,48 +799,47 @@ def create_app():
 
         return _rmap_server
 
-        @app.post("/api/rmap-initiate")
-        def rmap_initiate():
+    @app.post("/api/rmap-initiate")
+    def rmap_initiate():
+        try:
             payload = request.get_json(silent=True)
 
             if not isinstance(payload, dict):
                 return jsonify({"error": "JSON object required"}), 400
 
-            try:
                 rmap_server = get_rmap_server()
 
                 identity, response = rmap_server.receiveMsg1(payload)
 
-                return jsonify(response), 200
+            return jsonify(response), 200
 
-            except RMAPError as e:
-                return jsonify({"error": str(e)}), 400
+        except RMAPError as e:
+            return jsonify({"error": str(e)}), 400
 
-            except Exception:
-                app.logger.exception("RMAP initiate failed")
-                return jsonify({"error": "RMAP initiation failed"}), 500
+        except Exception:
+            app.logger.exception("RMAP initiate failed")
+            return jsonify({"error": "RMAP initiation failed"}), 500
             
+    @app.post("/api/rmap-get-link")
+    def rmap_get_link():
+        payload = request.get_json(silent=True)
 
-        @app.post("/api/rmap-get-link")
-        def rmap_get_link():
-            payload = request.get_json(silent=True)
+        if not isinstance(payload, dict):
+            return jsonify({"error": "JSON object required"}), 400
 
-            if not isinstance(payload, dict):
-                return jsonify({"error": "JSON object required"}), 400
+        try:
+            rmap_server = get_rmap_server()
 
-            try:
-                rmap_server = get_rmap_server()
+            identity, link, response = rmap_server.receiveMsg2(payload)
 
-                identity, link, response = rmap_server.receiveMsg2(payload)
+            return jsonify(response), 200
 
-                return jsonify(response), 200
+        except RMAPError as e:
+            return jsonify({"error": str(e)}), 400
 
-            except RMAPError as e:
-                return jsonify({"error": str(e)}), 400
-
-            except Exception:
-                app.logger.exception("RMAP get-link failed")
-                return jsonify({"error": "RMAP get-link failed"}), 500
+        except Exception:
+            app.logger.exception("RMAP get-link failed")
+            return jsonify({"error": "RMAP get-link failed"}), 500
         
 
     return app
