@@ -205,3 +205,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# RMAP private keys
+keys/server_priv.asc
+keys/*_priv.asc
