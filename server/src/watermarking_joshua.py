@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import Final
 
+import pymupdf
+
 
 from watermarking_method import WatermarkingMethod, load_pdf_bytes, PdfSource, SecretNotFoundError, InvalidKeyError
 
@@ -15,7 +17,9 @@ class HiddenObjectWatermark(WatermarkingMethod):
 
 
     def is_watermark_applicable(self, pdf:PdfSource, position:str |None = None) -> bool:
-        return True
+        data = load_pdf_bytes(pdf)
+        with pymupdf.open(stream=data, filetype="pdf") as document:
+            return document.page_count > 0 and not document.needs_pass
 
 
     def add_watermark(
