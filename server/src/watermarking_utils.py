@@ -37,6 +37,7 @@ import re
 
 from olles_metadata_watermark import MetadataWatermark
 
+from visible_repeat_watermark import VisibleRepeatWatermark
 
 from watermarking_method import (
     PdfSource,
@@ -55,6 +56,7 @@ METHODS: Dict[str, WatermarkingMethod] = {
     AddAfterEOF.name: AddAfterEOF(),
     UnsafeBashBridgeAppendEOF.name: UnsafeBashBridgeAppendEOF(),
     MetadataWatermark.name: MetadataWatermark(),
+    VisibleRepeatWatermark.name: VisibleRepeatWatermark(),
     HiddenObjectWatermark.name: HiddenObjectWatermark(),
 }
 """Registry of available watermarking methods.

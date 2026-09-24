@@ -807,9 +807,9 @@ def create_app():
             if not isinstance(payload, dict):
                 return jsonify({"error": "JSON object required"}), 400
 
-                rmap_server = get_rmap_server()
+            rmap_server = get_rmap_server()
 
-                identity, response = rmap_server.receiveMsg1(payload)
+            identity, response = rmap_server.receiveMsg1(payload)
 
             return jsonify(response), 200
 
