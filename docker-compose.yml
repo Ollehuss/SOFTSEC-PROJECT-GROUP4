@@ -23,6 +23,7 @@ services:
       # RMAP configuration
       - RMAP_SERVER_PUBLIC_KEY=/app/keys/server_pub.asc
       - RMAP_SERVER_PRIVATE_KEY=/app/keys/server_priv.asc
+      - RMAP_PASSPHRASE=${RMAP_PASSPHRASE}
       - RMAP_CLIENT_KEYS_DIR=/app/keys/clients
     depends_on:
       db:
