@@ -10,6 +10,7 @@ services:
     volumes:
       - user-files:/app/storage
       - ../rmap-keys:/app/keys:ro
+      - /home/softsec/Group_4.pdf:/app/assigned/Group_4.pdf:ro
     environment:
       - PYTHONUNBUFFERED=1
       - SECRET_KEY=${SECRET_KEY}
@@ -25,6 +26,7 @@ services:
       - RMAP_SERVER_PRIVATE_KEY=/app/keys/server_priv.asc
       - RMAP_PASSPHRASE=${RMAP_PASSPHRASE}
       - RMAP_CLIENT_KEYS_DIR=/app/keys/clients
+      - RMAP_ASSIGNED_PDF=/app/assigned/Group_4.pdf
     depends_on:
       db:
         condition: service_healthy

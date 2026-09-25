@@ -779,6 +779,10 @@ def create_app():
     "./keys/clients")
 
     app.config["RMAP_PASSPHRASE"] = os.environ.get("RMAP_PASSPHRASE") or None
+    app.config["RMAP_ASSIGNED_PDF"] = os.environ.get(
+        "RMAP_ASSIGNED_PDF",
+        "/app/assigned/Group_4.pdf",
+    )
 
     _rmap_server = None
 
@@ -829,8 +833,101 @@ def create_app():
 
         try:
             rmap_server = get_rmap_server()
-
             identity, link, response = rmap_server.receiveMsg2(payload)
+
+            source_path = Path(app.config["RMAP_ASSIGNED_PDF"]).resolve()
+
+            if not source_path.is_file():
+                raise RuntimeError("Assigned RMAP PDF is missing")
+
+            with get_engine().connect() as conn:
+                document = conn.execute(
+                    text("""
+                        SELECT id, name
+                        FROM Documents
+                        WHERE path = :path
+                        LIMIT 1
+                    """),
+                    {"path": str(source_path)},
+                ).first()
+
+            if document is None:
+                raise RuntimeError(
+                    "Assigned RMAP PDF is not registered in Documents"
+                )
+
+            document_id = int(document.id)
+            secret = link
+            key = app.config["SECRET_KEY"]
+            watermarked = source_path.read_bytes()
+
+            methods = (
+                "metadata-hmac",
+                "visible-repeat",
+                "hidden-object",
+            )
+
+            for method in methods:
+                if not WMUtils.is_watermarking_applicable(
+                    method=method,
+                    pdf=watermarked,
+                    position=None,
+                ):
+                    raise RuntimeError(
+                        f"Watermarking method not applicable: {method}"
+                    )
+
+                watermarked = WMUtils.apply_watermark(
+                    method=method,
+                    pdf=watermarked,
+                    secret=secret,
+                    key=key,
+                    position=None,
+                )
+
+            if not isinstance(watermarked, (bytes, bytearray)) or not watermarked:
+                raise RuntimeError("Watermarking produced no output")
+
+            dest_dir = Path(app.config["STORAGE_DIR"]) / "rmap"
+            dest_dir.mkdir(parents=True, exist_ok=True)
+
+            identity_slug = secure_filename(identity) or "recipient"
+            candidate = f"Group_4__{identity_slug}__{link}.pdf"
+            dest_path = dest_dir / candidate
+
+            with dest_path.open("xb") as f:
+                f.write(watermarked)
+
+            try:
+                with get_engine().begin() as conn:
+                    conn.execute(
+                        text("""
+                            INSERT INTO Versions
+                                (documentid, link, intended_for, secret,
+                                 method, position, path)
+                            VALUES
+                                (:documentid, :link, :intended_for, :secret,
+                                 :method, :position, :path)
+                        """),
+                        {
+                            "documentid": document_id,
+                            "link": link,
+                            "intended_for": identity,
+                            "secret": secret,
+                            "method": "combined",
+                            "position": "",
+                            "path": str(dest_path),
+                        },
+                    )
+            except Exception:
+                dest_path.unlink(missing_ok=True)
+                raise
+
+            app.logger.info(
+                "Created RMAP version for identity '%s' with link %s",
+                identity,
+                link,
+            )
 
             return jsonify(response), 200
 
