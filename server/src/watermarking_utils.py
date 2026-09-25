@@ -46,6 +46,7 @@ from watermarking_method import (
 )
 from add_after_eof import AddAfterEOF
 from unsafe_bash_bridge_append_eof import UnsafeBashBridgeAppendEOF
+from watermarking_joshua import HiddenObjectWatermark
 
 # --------------------
 # Method registry
@@ -56,6 +57,7 @@ METHODS: Dict[str, WatermarkingMethod] = {
     UnsafeBashBridgeAppendEOF.name: UnsafeBashBridgeAppendEOF(),
     MetadataWatermark.name: MetadataWatermark(),
     VisibleRepeatWatermark.name: VisibleRepeatWatermark(),
+    HiddenObjectWatermark.name: HiddenObjectWatermark(),
 }
 """Registry of available watermarking methods.
 
