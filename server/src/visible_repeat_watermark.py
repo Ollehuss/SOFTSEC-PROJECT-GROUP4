@@ -43,7 +43,7 @@ class VisibleRepeatWatermark(WatermarkingMethod):
             key.encode("utf-8"),
             secret.encode("utf-8"),
             hashlib.sha256,
-        ).hexdigest()[:16]
+        ).hexdigest()[:8]
 
         watermark_text = f"TATOU-watermark:{secret}:{tag}"
 
@@ -95,10 +95,17 @@ class VisibleRepeatWatermark(WatermarkingMethod):
 
                     secret, tag = watermark_data.rsplit(":", 1)
 
+                    if len(tag) != 8:
+                        continue
+                    try:
+                        int(tag, 16)
+                    except ValueError:
+                        continue
+
                     expected_tag = hmac.new(key.encode ("utf-8"),
                                             secret.encode("utf-8"),
                                             hashlib.sha256
-                                            ).hexdigest()[:16]
+                                            ).hexdigest()[:8]
 
                     if hmac.compare_digest(tag, expected_tag):
                         return secret
