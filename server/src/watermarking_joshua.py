@@ -5,7 +5,7 @@ import pymupdf
 import hmac
 import hashlib
 
-from watermarking_method import WatermarkingMethod, load_pdf_bytes, PdfSource, SecretNotFoundError, InvalidKeyError
+from watermarking_method import WatermarkingMethod, load_pdf_bytes, PdfSource, SecretNotFoundError, InvalidKeyError, WatermarkingError
 
 
 
@@ -37,17 +37,18 @@ class HiddenObjectWatermark(WatermarkingMethod):
             raise ValueError("Secret must be a non-empty string")
         if not key:
             raise ValueError("Key must be a non-empty string")
-
-        with pymupdf.open(stream=data, filetype="pdf") as document:
-            secret_xref = document.get_new_xref()
-            document.update_object(secret_xref, "<<>>")
-            secret_seal = hmac.new(key.encode(), secret.encode(), hashlib.sha256).hexdigest()
-            watermark_payload = f"{secret_seal}:{secret}"
-            document.update_stream(secret_xref, watermark_payload.encode())
-            catalog_xref = document.pdf_catalog()
-            document.xref_set_key(catalog_xref, self._catalog_key, f"{secret_xref} 0 R")
-            return document.tobytes(no_new_id=True)
-
+        try:
+            with pymupdf.open(stream=data, filetype="pdf") as document:
+                secret_xref = document.get_new_xref()
+                document.update_object(secret_xref, "<<>>")
+                secret_seal = hmac.new(key.encode(), secret.encode(), hashlib.sha256).hexdigest()
+                watermark_payload = f"{secret_seal}:{secret}"
+                document.update_stream(secret_xref, watermark_payload.encode())
+                catalog_xref = document.pdf_catalog()
+                document.xref_set_key(catalog_xref, self._catalog_key, f"{secret_xref} 0 R")
+                return document.tobytes(no_new_id=True)
+        except (RuntimeError, ValueError) as exc:
+            raise WatermarkingError("Failed to embed watermark") from exc
 
     def read_secret(self, pdf: PdfSource, key: str) -> str:
         data = load_pdf_bytes(pdf)
