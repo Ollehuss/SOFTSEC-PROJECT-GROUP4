@@ -62,3 +62,76 @@ def test_visible_repeat_rejects_wrong_key(tmp_path):
             key="wrong-key",
         )
 
+
+def test_visible_repeat_recovers_from_damaged_copy(tmp_path):
+    original_pdf = tmp_path / "original.pdf"
+    doc =pymupdf.open()
+    doc.new_page()
+    doc.save(original_pdf)
+    doc.close()
+
+    method = VisibleRepeatWatermark()
+
+    secret = "test-secret-123"
+    key = "test-key"
+
+    watermarked_bytes = method.add_watermark(original_pdf,
+                                             secret=secret,
+                                             key=key,
+                                             position=None,)
+
+    watermarked_pdf = tmp_path / "watermarked.pdf"
+    watermarked_pdf.write_bytes(watermarked_bytes)
+    doc = pymupdf.open(watermarked_pdf)
+    page = doc[0]
+
+    first_watermark = page.search_for("TATOU-watermark:")[0]
+    page.add_redact_annot(first_watermark)
+    page.apply_redactions()
+
+    damaged_pdf = tmp_path / "damaged.pdf"
+    doc.save(damaged_pdf)
+    doc.close()
+
+    recovered_secret = method.read_secret(
+        damaged_pdf,
+        key=key,
+    )
+
+    assert recovered_secret == secret
+
+def test_visible_repeat_rejects_empty_secret(tmp_path):
+    original_pdf = tmp_path / "original.pdf"
+
+    doc = pymupdf.open()
+    doc.new_page()
+    doc.save(original_pdf)
+    doc.close()
+
+    method = VisibleRepeatWatermark()
+
+    with pytest.raises(ValueError):
+        method.add_watermark(original_pdf,
+                             secret="",
+                             key="test-key",
+                             position=None,
+        )
+
+
+def test_visible_repeat_rejects_empty_key(tmp_path):
+    original_pdf = tmp_path / "original.pdf"
+
+    doc = pymupdf.open()
+    doc.new_page()
+    doc.save(original_pdf)
+    doc.close()
+
+    method = VisibleRepeatWatermark()
+
+    with pytest.raises(ValueError):
+        method.add_watermark(original_pdf,
+                             secret="test-secret",
+                             key="",
+                             position=None,
+        )
+
