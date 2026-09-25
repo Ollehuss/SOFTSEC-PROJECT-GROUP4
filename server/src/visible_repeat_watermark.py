@@ -30,6 +30,12 @@ class VisibleRepeatWatermark(WatermarkingMethod):
             position: str | None = None,
     ) -> bytes:
 
+        if not secret:
+            raise ValueError("Secret can not be empty")
+       
+        if not key:
+            raise ValueError("Key can not be empty")
+
         pdf_bytes = load_pdf_bytes(pdf)
         doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
 
@@ -64,29 +70,43 @@ class VisibleRepeatWatermark(WatermarkingMethod):
         return result
 
     def read_secret(self, pdf:PdfSource, key:str) -> str:
+        if not key:
+            raise InvalidKeyError("Key can not be empty")
+
         pdf_bytes = load_pdf_bytes(pdf)
         doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
 
         marker = "TATOU-watermark:"
+        watermark_found = False
 
-        for page in doc:
-            text = page.get_text()
-            if marker in text:
-                after_marker = text.split(marker, 1)[1]
-                watermark_data = after_marker.splitlines()[0].strip()
-                secret, tag = watermark_data.rsplit(":", 1)
+        try:
+            for page in doc:
+                text = page.get_text()
 
-                expected_tag = hmac.new(
-                    key.encode("utf-8"),
-                    secret.encode("utf-8"),
-                    hashlib.sha256,
-                ).hexdigest()[:16]
+                for line in text.splitlines():
+                    if marker not in line:
+                        continue
 
-                doc.close()
-                if not hmac.compare_digest(tag, expected_tag):
-                    raise InvalidKeyError("Invalid key or modified watermark")
+                    watermark_found = True
+                    watermark_data = line.split(marker, 1)[1].strip()
 
-                return secret
+                    if ":" not in watermark_data:
+                        continue
 
-        doc.close()
+                    secret, tag = watermark_data.rsplit(":", 1)
+
+                    expected_tag = hmac.new(key.encode ("utf-8"),
+                                            secret.encode("utf-8"),
+                                            hashlib.sha256
+                                            ).hexdigest()[:16]
+
+                    if hmac.compare_digest(tag, expected_tag):
+                        return secret
+
+        finally:
+            doc.close()
+
+        if watermark_found:
+            raise InvalidKeyError("Invalid key or modified watermark")
+
         raise SecretNotFoundError("Visible watermark not found")
