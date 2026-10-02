@@ -1,4 +1,5 @@
 import os
+import secrets
 import io
 import hashlib
 import datetime as dt
@@ -635,8 +636,8 @@ def create_app():
         except Exception as e:
             return jsonify({"error": f"failed to write watermarked file: {e}"}), 500
 
-        # link token = sha1(watermarked_file_name)
-        link_token = hashlib.sha1(candidate.encode("utf-8")).hexdigest()
+        # Generate an unpredictable public download token
+        link_token = secrets.token_hex(32)
 
         try:
             with get_engine().begin() as conn:
