@@ -3,6 +3,9 @@ from hypothesis import given, settings, strategies as st
 
 from server import app
 
+import os
+from itsdangerous import URLSafeTimedSerializer
+
 
 client = app.test_client()
 
@@ -30,3 +33,32 @@ def test_login_rejects_non_object_json(payload):
     response = client.post("/api/login", json=payload)
 
     assert response.status_code == 400
+
+
+def make_test_auth_headers():
+    serializer = URLSafeTimedSerializer(
+        os.environ["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+    return {"Authorization": f"Bearer {token}"}
+
+
+@settings(max_examples=100, deadline=None)
+@given(document_id=st.text(
+    alphabet="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    min_size=1,
+))
+def test_get_document_rejects_non_numeric_ids(document_id):
+    response = client.get(
+        "/api/get-document",
+        query_string={"id": document_id},
+        headers=make_test_auth_headers(),
+    )
+
+    assert response.status_code == 400
+
