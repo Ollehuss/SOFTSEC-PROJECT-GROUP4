@@ -110,7 +110,9 @@ def create_app():
     # POST /api/create-user {email, login, password}
     @app.post("/api/create-user")
     def create_user():
-        payload = request.get_json(silent=True) or {}
+        payload = request.get_json(silent=True)
+        if not isinstance(payload, dict):
+            return jsonify({"error": "JSON body must be an object"}), 400
         email = (payload.get("email") or "").strip().lower()
         login = (payload.get("login") or "").strip()
         password = payload.get("password") or ""
@@ -140,7 +142,9 @@ def create_app():
     # POST /api/login {login, password}
     @app.post("/api/login")
     def login():
-        payload = request.get_json(silent=True) or {}
+        payload = request.get_json(silent=True)
+        if not isinstance(payload, dict):
+            return jsonify({"error": "JSON body must be an object"}), 400
         email = (payload.get("email") or "").strip()
         password = payload.get("password") or ""
         if not email or not password:
