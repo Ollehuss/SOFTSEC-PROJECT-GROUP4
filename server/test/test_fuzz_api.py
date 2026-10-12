@@ -63,6 +63,19 @@ def test_get_document_rejects_non_numeric_ids(document_id):
     assert response.status_code == 400
 
 
+
+
+class FakeResult:
+    def __init__(self, rows=None):
+        self.rows = rows if rows is not None else []
+
+    def first(self):
+        return None
+
+    def all(self):
+        return self.rows
+
+
 class FakeConnection:
     def __enter__(self):
         return self
@@ -71,15 +84,26 @@ class FakeConnection:
         return False
 
     def execute(self, query, parameters=None):
-        return self
-
-    def first(self):
-        return None
+        return FakeResult()
 
 
 class FakeEngine:
     def connect(self):
         return FakeConnection()
+
+
+
+class RecordingConnection(FakeConnection):
+    def __init__(self):
+        self.query = None
+        self.parameters = None
+
+    def execute(self, query, parameters=None):
+        self.query = str(query)
+        self.parameters = parameters
+        return FakeResult()
+
+
 
 
     
@@ -107,4 +131,76 @@ def test_get_document_handles_numeric_ids(document_id):
             app.config["_ENGINE"] = old_engine
         else:
             app.config.pop("_ENGINE", None)
+
+
+def test_list_documents_requires_authentication():
+    response = client.get("/api/list-documents")
+
+    assert response.status_code == 401
+
+
+
+@settings(max_examples=100, deadline=None)
+@given(token=st.text(
+    alphabet="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.",
+    max_size=200,
+))
+def test_list_documents_rejects_arbitrary_tokens(token):
+    response = client.get(
+        "/api/list-documents",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 401
+
+
+def test_list_documents_returns_empty_list_when_no_documents(monkeypatch):
+    monkeypatch.setitem(app.config, "_ENGINE", FakeEngine())
+
+    response = client.get(
+        "/api/list-documents",
+        headers=make_test_auth_headers(),
+    )
+
+    assert response.status_code == 200
+    assert response.get_json() == {"documents": []}
+
+
+def test_list_documents_filters_by_authenticated_user(monkeypatch):
+    connection = RecordingConnection()
+
+    class RecordingEngine:
+        def connect(self):
+            return connection
+
+    monkeypatch.setitem(app.config, "_ENGINE", RecordingEngine())
+
+    response = client.get(
+        "/api/list-documents",
+        headers=make_test_auth_headers(),
+    )
+
+    assert response.status_code == 200
+    assert connection.parameters == {"uid": 1}
+    assert "WHERE ownerid = :uid" in connection.query
+
+
+def test_list_documents_does_not_expose_database_errors(monkeypatch):
+    class BrokenConnection(FakeConnection):
+        def execute(self, query, parameters=None):
+            raise RuntimeError("internal_database_secret_123")
+
+    class BrokenEngine:
+        def connect(self):
+            return BrokenConnection()
+
+    monkeypatch.setitem(app.config, "_ENGINE", BrokenEngine())
+
+    response = client.get(
+        "/api/list-documents",
+        headers=make_test_auth_headers(),
+    )
+
+    assert response.status_code == 503
+    assert "internal_database_secret_123" not in response.get_data(as_text=True)
 

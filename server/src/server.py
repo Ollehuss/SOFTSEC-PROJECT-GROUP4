@@ -239,8 +239,10 @@ def create_app():
                     """),
                     {"uid": int(g.user["id"])},
                 ).all()
-        except Exception as e:
-            return jsonify({"error": f"database error: {str(e)}"}), 503
+        except Exception:
+            app.logger.exception("Failed to list documents")
+            return jsonify({"error": "database error"}), 503
+
 
         docs = [{
             "id": int(r.id),
