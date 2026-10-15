@@ -137,3 +137,33 @@ def test_get_document_path_with_authentication(client, auth_headers):
 def test_get_version_invalid_link(client):
     response = client.get("/api/get-version/invalid-test-link")
     assert response.status_code in (400, 403, 404, 410)
+
+# --------------------------------------------------
+# GET /api/get-watermarking-methods
+# --------------------------------------------------
+
+def test_get_watermarking_methods(client):
+    response = client.get("/api/get-watermarking-methods")
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+    assert "methods" in data
+    assert "count" in data
+    assert isinstance(data["methods"], list)
+    assert data["count"] == len(data["methods"])
+
+    for method in data["methods"]:
+        assert isinstance(method["name"], str)
+        assert method["name"]
+        assert isinstance(method["description"], str)
+
+def test_upload_document_rejects_non_pdf(client, auth_headers):
+    response = client.post(
+        "/api/upload-document",
+        headers=auth_headers,
+        data={"file": (io.BytesIO(b"not a PDF"), "document.txt")},
+        content_type="multipart/form-data",
+    )
+
+    assert response.status_code in (400, 415)
