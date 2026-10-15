@@ -1,0 +1,2504 @@
+TATOU SERVER - COSMIC RAY SURVIVING MUTANT DIFFS
+======================================================================
+Total surviving mutants: 119
+Original source: src/server.py
+
+
+======================================================================
+MUTANT 1/119
+Job ID: bf3870ed7a274cd49f2666863ff33f7b
+Function: _safe_resolve_under_storage
+Original line: 446
+Operator: core/AddNot
+Occurrence: 23
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/bf3870ed7a274cd49f2666863ff33f7b
+@@ -443,7 +443,7 @@
+     def _safe_resolve_under_storage(p: str, storage_root: Path) -> Path:
+         storage_root = storage_root.resolve()
+         fp = Path(p)
+-        if not fp.is_absolute():
++        if not not fp.is_absolute():
+             fp = storage_root / fp
+         fp = fp.resolve()
+         # Python 3.12 has is_relative_to on Path
+
+======================================================================
+MUTANT 2/119
+Job ID: ee719d019fc844cd9cda34858a2b910e
+Function: _safe_resolve_under_storage
+Original line: 446
+Operator: core/ReplaceUnaryOperator_Delete_Not
+Occurrence: 17
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/ee719d019fc844cd9cda34858a2b910e
+@@ -443,7 +443,7 @@
+     def _safe_resolve_under_storage(p: str, storage_root: Path) -> Path:
+         storage_root = storage_root.resolve()
+         fp = Path(p)
+-        if not fp.is_absolute():
++        if  fp.is_absolute():
+             fp = storage_root / fp
+         fp = fp.resolve()
+         # Python 3.12 has is_relative_to on Path
+
+======================================================================
+MUTANT 3/119
+Job ID: 2e31116374314560acfcb4c9156cd30b
+Function: _safe_resolve_under_storage
+Original line: 450
+Operator: core/AddNot
+Occurrence: 24
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/2e31116374314560acfcb4c9156cd30b
+@@ -447,7 +447,7 @@
+             fp = storage_root / fp
+         fp = fp.resolve()
+         # Python 3.12 has is_relative_to on Path
+-        if hasattr(fp, "is_relative_to"):
++        if not hasattr(fp, "is_relative_to"):
+             if not fp.is_relative_to(storage_root):
+                 raise RuntimeError(f"path {fp} escapes storage root {storage_root}")
+         else:
+
+======================================================================
+MUTANT 4/119
+Job ID: e750ed35bcc849c9bcd26f56d84ab85c
+Function: _safe_resolve_under_storage
+Original line: 456
+Operator: core/ExceptionReplacer
+Occurrence: 18
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/e750ed35bcc849c9bcd26f56d84ab85c
+@@ -453,7 +453,7 @@
+         else:
+             try:
+                 fp.relative_to(storage_root)
+-            except ValueError:
++            except CosmicRayTestingException:
+                 raise RuntimeError(f"path {fp} escapes storage root {storage_root}")
+         return fp
+ 
+
+======================================================================
+MUTANT 5/119
+Job ID: 6dde3c7116384d108c8e67775ec660bf
+Function: delete_document
+Original line: 470
+Operator: core/ReplaceAndWithOr
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/6dde3c7116384d108c8e67775ec660bf
+@@ -467,7 +467,7 @@
+             document_id = (
+                 request.args.get("id")
+                 or request.args.get("documentid")
+-                or (request.is_json and (request.get_json(silent=True) or {}).get("id"))
++                or (request.is_json or (request.get_json(silent=True) or {}).get("id"))
+             )
+         try:
+             doc_id = document_id
+
+======================================================================
+MUTANT 6/119
+Job ID: 2d595174055e4624883094c812efab29
+Function: delete_document
+Original line: 470
+Operator: core/ReplaceOrWithAnd
+Occurrence: 14
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/2d595174055e4624883094c812efab29
+@@ -467,7 +467,7 @@
+             document_id = (
+                 request.args.get("id")
+                 or request.args.get("documentid")
+-                or (request.is_json and (request.get_json(silent=True) or {}).get("id"))
++                and (request.is_json and (request.get_json(silent=True) or {}).get("id"))
+             )
+         try:
+             doc_id = document_id
+
+======================================================================
+MUTANT 7/119
+Job ID: 85b6e57586e642518cf2ab800728b35f
+Function: delete_document
+Original line: 470
+Operator: core/ReplaceOrWithAnd
+Occurrence: 15
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/85b6e57586e642518cf2ab800728b35f
+@@ -467,7 +467,7 @@
+             document_id = (
+                 request.args.get("id")
+                 or request.args.get("documentid")
+-                or (request.is_json and (request.get_json(silent=True) or {}).get("id"))
++                or (request.is_json and (request.get_json(silent=True) and {}).get("id"))
+             )
+         try:
+             doc_id = document_id
+
+======================================================================
+MUTANT 8/119
+Job ID: 9f1ca7d115534ed999e40393d041e7ed
+Function: delete_document
+Original line: 470
+Operator: core/ReplaceTrueWithFalse
+Occurrence: 11
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/9f1ca7d115534ed999e40393d041e7ed
+@@ -467,7 +467,7 @@
+             document_id = (
+                 request.args.get("id")
+                 or request.args.get("documentid")
+-                or (request.is_json and (request.get_json(silent=True) or {}).get("id"))
++                or (request.is_json and (request.get_json(silent=False) or {}).get("id"))
+             )
+         try:
+             doc_id = document_id
+
+======================================================================
+MUTANT 9/119
+Job ID: 6e5d4b67e78b469db1ccee77dcda325e
+Function: delete_document
+Original line: 474
+Operator: core/ExceptionReplacer
+Occurrence: 19
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/6e5d4b67e78b469db1ccee77dcda325e
+@@ -471,7 +471,7 @@
+             )
+         try:
+             doc_id = document_id
+-        except (TypeError, ValueError):
++        except (CosmicRayTestingException, ValueError):
+             return jsonify({"error": "document id required"}), 400
+ 
+         # Fetch the document (enforce ownership)
+
+======================================================================
+MUTANT 10/119
+Job ID: 571ace9f886e495398c4d0f88aceb153
+Function: delete_document
+Original line: 474
+Operator: core/ExceptionReplacer
+Occurrence: 20
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/571ace9f886e495398c4d0f88aceb153
+@@ -471,7 +471,7 @@
+             )
+         try:
+             doc_id = document_id
+-        except (TypeError, ValueError):
++        except (TypeError, CosmicRayTestingException):
+             return jsonify({"error": "document id required"}), 400
+ 
+         # Fetch the document (enforce ownership)
+
+======================================================================
+MUTANT 11/119
+Job ID: b94e60754c6a4df78693abcd3c8ff1cc
+Function: delete_document
+Original line: 475
+Operator: core/NumberReplacer
+Occurrence: 84
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/b94e60754c6a4df78693abcd3c8ff1cc
+@@ -472,7 +472,7 @@
+         try:
+             doc_id = document_id
+         except (TypeError, ValueError):
+-            return jsonify({"error": "document id required"}), 400
++            return jsonify({"error": "document id required"}), 401
+ 
+         # Fetch the document (enforce ownership)
+         try:
+
+======================================================================
+MUTANT 12/119
+Job ID: 1e8f96b864c04235b7ae2e0f9bcf7223
+Function: delete_document
+Original line: 475
+Operator: core/NumberReplacer
+Occurrence: 85
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/1e8f96b864c04235b7ae2e0f9bcf7223
+@@ -472,7 +472,7 @@
+         try:
+             doc_id = document_id
+         except (TypeError, ValueError):
+-            return jsonify({"error": "document id required"}), 400
++            return jsonify({"error": "document id required"}), 399
+ 
+         # Fetch the document (enforce ownership)
+         try:
+
+======================================================================
+MUTANT 13/119
+Job ID: 6934b93a07e248c1a13f07a36f59ef96
+Function: delete_document
+Original line: 512
+Operator: core/ReplaceFalseWithTrue
+Occurrence: 3
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/6934b93a07e248c1a13f07a36f59ef96
+@@ -509,7 +509,7 @@
+ 
+         # Resolve and delete file (best effort)
+         storage_root = Path(app.config["STORAGE_DIR"])
+-        file_deleted = False
++        file_deleted = True
+         file_missing = False
+         delete_error = None
+         try:
+
+======================================================================
+MUTANT 14/119
+Job ID: 9eb73c24fc724dc3bf02c553cbb675ad
+Function: delete_document
+Original line: 521
+Operator: core/ExceptionReplacer
+Occurrence: 23
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/9eb73c24fc724dc3bf02c553cbb675ad
+@@ -518,7 +518,7 @@
+                 try:
+                     fp.unlink()
+                     file_deleted = True
+-                except Exception as e:
++                except CosmicRayTestingException as e:
+                     delete_error = f"failed to delete file: {e}"
+                     app.logger.warning("Failed to delete file %s for doc id=%s: %s", fp, row.id, e)
+             else:
+
+======================================================================
+MUTANT 15/119
+Job ID: 3f3a49f2ba5b4bc8ba5614374446b673
+Function: delete_document
+Original line: 525
+Operator: core/ReplaceTrueWithFalse
+Occurrence: 13
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/3f3a49f2ba5b4bc8ba5614374446b673
+@@ -522,7 +522,7 @@
+                     delete_error = f"failed to delete file: {e}"
+                     app.logger.warning("Failed to delete file %s for doc id=%s: %s", fp, row.id, e)
+             else:
+-                file_missing = True
++                file_missing = False
+         except RuntimeError as e:
+             # Path escapes storage root; refuse to touch the file
+             delete_error = str(e)
+
+======================================================================
+MUTANT 16/119
+Job ID: a8037254cee142f0bcba8900a2965896
+Function: delete_document
+Original line: 526
+Operator: core/ExceptionReplacer
+Occurrence: 24
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/a8037254cee142f0bcba8900a2965896
+@@ -523,7 +523,7 @@
+                     app.logger.warning("Failed to delete file %s for doc id=%s: %s", fp, row.id, e)
+             else:
+                 file_missing = True
+-        except RuntimeError as e:
++        except CosmicRayTestingException as e:
+             # Path escapes storage root; refuse to touch the file
+             delete_error = str(e)
+             app.logger.error("Path safety check failed for doc id=%s: %s", row.id, e)
+
+======================================================================
+MUTANT 17/119
+Job ID: 341bfc59f2424a28be217a3b63d5c6c9
+Function: get_document
+Original line: 340
+Operator: core/AddNot
+Occurrence: 15
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/341bfc59f2424a28be217a3b63d5c6c9
+@@ -337,7 +337,7 @@
+     def get_document(document_id: int | None = None):
+     
+         # Support both path param and ?id=/ ?documentid=
+-        if document_id is None:
++        if not document_id is None:
+             document_id = request.args.get("id") or request.args.get("documentid")
+             try:
+                 document_id = int(document_id)
+
+======================================================================
+MUTANT 18/119
+Job ID: c3e3f86c6b1a43acb51861e9e9a9cefd
+Function: get_document
+Original line: 340
+Operator: core/ReplaceComparisonOperator_Is_IsNot
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/c3e3f86c6b1a43acb51861e9e9a9cefd
+@@ -337,7 +337,7 @@
+     def get_document(document_id: int | None = None):
+     
+         # Support both path param and ?id=/ ?documentid=
+-        if document_id is None:
++        if document_id is not None:
+             document_id = request.args.get("id") or request.args.get("documentid")
+             try:
+                 document_id = int(document_id)
+
+======================================================================
+MUTANT 19/119
+Job ID: c280347f0d7c4cd1b8f631c411fd887b
+Function: get_document
+Original line: 341
+Operator: core/ReplaceOrWithAnd
+Occurrence: 12
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/c280347f0d7c4cd1b8f631c411fd887b
+@@ -338,7 +338,7 @@
+     
+         # Support both path param and ?id=/ ?documentid=
+         if document_id is None:
+-            document_id = request.args.get("id") or request.args.get("documentid")
++            document_id = request.args.get("id") and request.args.get("documentid")
+             try:
+                 document_id = int(document_id)
+             except (TypeError, ValueError):
+
+======================================================================
+MUTANT 20/119
+Job ID: e93a142fdef640cebcfd20bf68117edf
+Function: get_document
+Original line: 344
+Operator: core/ExceptionReplacer
+Occurrence: 13
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/e93a142fdef640cebcfd20bf68117edf
+@@ -341,7 +341,7 @@
+             document_id = request.args.get("id") or request.args.get("documentid")
+             try:
+                 document_id = int(document_id)
+-            except (TypeError, ValueError):
++            except (TypeError, CosmicRayTestingException):
+                 return jsonify({"error": "document id required"}), 400
+         
+         try:
+
+======================================================================
+MUTANT 21/119
+Job ID: 97f070c1a9cd49dfa3400702c8dfc5bd
+Function: get_document
+Original line: 344
+Operator: core/ExceptionReplacer
+Occurrence: 12
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/97f070c1a9cd49dfa3400702c8dfc5bd
+@@ -341,7 +341,7 @@
+             document_id = request.args.get("id") or request.args.get("documentid")
+             try:
+                 document_id = int(document_id)
+-            except (TypeError, ValueError):
++            except (CosmicRayTestingException, ValueError):
+                 return jsonify({"error": "document id required"}), 400
+         
+         try:
+
+======================================================================
+MUTANT 22/119
+Job ID: 29f7838231424f9daf66b49818cd8dc6
+Function: get_document
+Original line: 345
+Operator: core/NumberReplacer
+Occurrence: 62
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/29f7838231424f9daf66b49818cd8dc6
+@@ -342,7 +342,7 @@
+             try:
+                 document_id = int(document_id)
+             except (TypeError, ValueError):
+-                return jsonify({"error": "document id required"}), 400
++                return jsonify({"error": "document id required"}), 401
+         
+         try:
+             with get_engine().connect() as conn:
+
+======================================================================
+MUTANT 23/119
+Job ID: cf4c84fd87404adf9858215aab1652f5
+Function: get_document
+Original line: 345
+Operator: core/NumberReplacer
+Occurrence: 63
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/cf4c84fd87404adf9858215aab1652f5
+@@ -342,7 +342,7 @@
+             try:
+                 document_id = int(document_id)
+             except (TypeError, ValueError):
+-                return jsonify({"error": "document id required"}), 400
++                return jsonify({"error": "document id required"}), 399
+         
+         try:
+             with get_engine().connect() as conn:
+
+======================================================================
+MUTANT 24/119
+Job ID: 7d4d04a3102342db97fed2cdd83f3634
+Function: get_document
+Original line: 358
+Operator: core/ExceptionReplacer
+Occurrence: 14
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/7d4d04a3102342db97fed2cdd83f3634
+@@ -355,7 +355,7 @@
+                     """),
+                     {"id": document_id, "uid": int(g.user["id"])},
+                 ).first()
+-        except Exception as e:
++        except CosmicRayTestingException as e:
+             return jsonify({"error": f"database error: {str(e)}"}), 503
+ 
+         # Don’t leak whether a doc exists for another user
+
+======================================================================
+MUTANT 25/119
+Job ID: 72d576c4d1464e1c83eff8aa5fd8e1c8
+Function: get_document
+Original line: 359
+Operator: core/NumberReplacer
+Occurrence: 65
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/72d576c4d1464e1c83eff8aa5fd8e1c8
+@@ -356,7 +356,7 @@
+                     {"id": document_id, "uid": int(g.user["id"])},
+                 ).first()
+         except Exception as e:
+-            return jsonify({"error": f"database error: {str(e)}"}), 503
++            return jsonify({"error": f"database error: {str(e)}"}), 502
+ 
+         # Don’t leak whether a doc exists for another user
+         if not row:
+
+======================================================================
+MUTANT 26/119
+Job ID: 8305ce168d9f4f8aad6ec6499619c3d7
+Function: get_document
+Original line: 359
+Operator: core/NumberReplacer
+Occurrence: 64
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/8305ce168d9f4f8aad6ec6499619c3d7
+@@ -356,7 +356,7 @@
+                     {"id": document_id, "uid": int(g.user["id"])},
+                 ).first()
+         except Exception as e:
+-            return jsonify({"error": f"database error: {str(e)}"}), 503
++            return jsonify({"error": f"database error: {str(e)}"}), 504
+ 
+         # Don’t leak whether a doc exists for another user
+         if not row:
+
+======================================================================
+MUTANT 27/119
+Job ID: 0c296f55234841a4b70a92005d3b1760
+Function: get_document
+Original line: 362
+Operator: core/AddNot
+Occurrence: 16
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/0c296f55234841a4b70a92005d3b1760
+@@ -359,7 +359,7 @@
+             return jsonify({"error": f"database error: {str(e)}"}), 503
+ 
+         # Don’t leak whether a doc exists for another user
+-        if not row:
++        if not not row:
+             return jsonify({"error": "document not found"}), 404
+ 
+         file_path = Path(row.path)
+
+======================================================================
+MUTANT 28/119
+Job ID: f802526c706741bb82641fbf8a13fd46
+Function: get_document
+Original line: 362
+Operator: core/ReplaceUnaryOperator_Delete_Not
+Occurrence: 13
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/f802526c706741bb82641fbf8a13fd46
+@@ -359,7 +359,7 @@
+             return jsonify({"error": f"database error: {str(e)}"}), 503
+ 
+         # Don’t leak whether a doc exists for another user
+-        if not row:
++        if  row:
+             return jsonify({"error": "document not found"}), 404
+ 
+         file_path = Path(row.path)
+
+======================================================================
+MUTANT 29/119
+Job ID: 0cbb32005fe84b4f89cf2a1a7741a7d0
+Function: get_document
+Original line: 363
+Operator: core/NumberReplacer
+Occurrence: 66
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/0cbb32005fe84b4f89cf2a1a7741a7d0
+@@ -360,7 +360,7 @@
+ 
+         # Don’t leak whether a doc exists for another user
+         if not row:
+-            return jsonify({"error": "document not found"}), 404
++            return jsonify({"error": "document not found"}), 405
+ 
+         file_path = Path(row.path)
+ 
+
+======================================================================
+MUTANT 30/119
+Job ID: 9637a88bc18849e0a9ad4451613fbdd9
+Function: get_document
+Original line: 363
+Operator: core/NumberReplacer
+Occurrence: 67
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/9637a88bc18849e0a9ad4451613fbdd9
+@@ -360,7 +360,7 @@
+ 
+         # Don’t leak whether a doc exists for another user
+         if not row:
+-            return jsonify({"error": "document not found"}), 404
++            return jsonify({"error": "document not found"}), 403
+ 
+         file_path = Path(row.path)
+ 
+
+======================================================================
+MUTANT 31/119
+Job ID: 620f28c47f1047d99f5d9897db9388c7
+Function: get_document
+Original line: 370
+Operator: core/ExceptionReplacer
+Occurrence: 15
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/620f28c47f1047d99f5d9897db9388c7
+@@ -367,7 +367,7 @@
+         # Basic safety: ensure path is inside STORAGE_DIR and exists
+         try:
+             file_path.resolve().relative_to(app.config["STORAGE_DIR"].resolve())
+-        except Exception:
++        except CosmicRayTestingException:
+             # Path looks suspicious or outside storage
+             return jsonify({"error": "document path invalid"}), 500
+ 
+
+======================================================================
+MUTANT 32/119
+Job ID: 05f172dd841142329d9152141f5cb460
+Function: get_document
+Original line: 372
+Operator: core/NumberReplacer
+Occurrence: 68
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/05f172dd841142329d9152141f5cb460
+@@ -369,7 +369,7 @@
+             file_path.resolve().relative_to(app.config["STORAGE_DIR"].resolve())
+         except Exception:
+             # Path looks suspicious or outside storage
+-            return jsonify({"error": "document path invalid"}), 500
++            return jsonify({"error": "document path invalid"}), 501
+ 
+         if not file_path.exists():
+             return jsonify({"error": "file missing on disk"}), 410
+
+======================================================================
+MUTANT 33/119
+Job ID: 878281cc32ea409589ac8e2e9305b189
+Function: get_document
+Original line: 372
+Operator: core/NumberReplacer
+Occurrence: 69
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/878281cc32ea409589ac8e2e9305b189
+@@ -369,7 +369,7 @@
+             file_path.resolve().relative_to(app.config["STORAGE_DIR"].resolve())
+         except Exception:
+             # Path looks suspicious or outside storage
+-            return jsonify({"error": "document path invalid"}), 500
++            return jsonify({"error": "document path invalid"}), 499
+ 
+         if not file_path.exists():
+             return jsonify({"error": "file missing on disk"}), 410
+
+======================================================================
+MUTANT 34/119
+Job ID: 253c965c20a746499868445ac53fd672
+Function: get_document
+Original line: 374
+Operator: core/AddNot
+Occurrence: 17
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/253c965c20a746499868445ac53fd672
+@@ -371,7 +371,7 @@
+             # Path looks suspicious or outside storage
+             return jsonify({"error": "document path invalid"}), 500
+ 
+-        if not file_path.exists():
++        if not not file_path.exists():
+             return jsonify({"error": "file missing on disk"}), 410
+ 
+         # Serve inline with caching hints + ETag based on stored sha256
+
+======================================================================
+MUTANT 35/119
+Job ID: 43345bce66b242d3a54d40ee74c78513
+Function: get_document
+Original line: 374
+Operator: core/ReplaceUnaryOperator_Delete_Not
+Occurrence: 14
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/43345bce66b242d3a54d40ee74c78513
+@@ -371,7 +371,7 @@
+             # Path looks suspicious or outside storage
+             return jsonify({"error": "document path invalid"}), 500
+ 
+-        if not file_path.exists():
++        if  file_path.exists():
+             return jsonify({"error": "file missing on disk"}), 410
+ 
+         # Serve inline with caching hints + ETag based on stored sha256
+
+======================================================================
+MUTANT 36/119
+Job ID: c75b3c3dab634e62b2165fcde246f783
+Function: get_document
+Original line: 375
+Operator: core/NumberReplacer
+Occurrence: 71
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/c75b3c3dab634e62b2165fcde246f783
+@@ -372,7 +372,7 @@
+             return jsonify({"error": "document path invalid"}), 500
+ 
+         if not file_path.exists():
+-            return jsonify({"error": "file missing on disk"}), 410
++            return jsonify({"error": "file missing on disk"}), 409
+ 
+         # Serve inline with caching hints + ETag based on stored sha256
+         resp = send_file(
+
+======================================================================
+MUTANT 37/119
+Job ID: 4c969354e2864d9c9b22bb1d2e733383
+Function: get_document
+Original line: 375
+Operator: core/NumberReplacer
+Occurrence: 70
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/4c969354e2864d9c9b22bb1d2e733383
+@@ -372,7 +372,7 @@
+             return jsonify({"error": "document path invalid"}), 500
+ 
+         if not file_path.exists():
+-            return jsonify({"error": "file missing on disk"}), 410
++            return jsonify({"error": "file missing on disk"}), 411
+ 
+         # Serve inline with caching hints + ETag based on stored sha256
+         resp = send_file(
+
+======================================================================
+MUTANT 38/119
+Job ID: 54566e9bd9304bdfae53c3adbc7b1fac
+Function: get_document
+Original line: 381
+Operator: core/ReplaceFalseWithTrue
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/54566e9bd9304bdfae53c3adbc7b1fac
+@@ -378,7 +378,7 @@
+         resp = send_file(
+             file_path,
+             mimetype="application/pdf",
+-            as_attachment=False,
++            as_attachment=True,
+             download_name=row.name if row.name.lower().endswith(".pdf") else f"{row.name}.pdf",
+             conditional=True,   # enables 304 if If-Modified-Since/Range handling
+             max_age=0,
+
+======================================================================
+MUTANT 39/119
+Job ID: 32c79625b9554371ba3638757828385b
+Function: get_document
+Original line: 382
+Operator: core/AddNot
+Occurrence: 18
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/32c79625b9554371ba3638757828385b
+@@ -379,7 +379,7 @@
+             file_path,
+             mimetype="application/pdf",
+             as_attachment=False,
+-            download_name=row.name if row.name.lower().endswith(".pdf") else f"{row.name}.pdf",
++            download_name=row.name if not row.name.lower().endswith(".pdf") else f"{row.name}.pdf",
+             conditional=True,   # enables 304 if If-Modified-Since/Range handling
+             max_age=0,
+             last_modified=file_path.stat().st_mtime,
+
+======================================================================
+MUTANT 40/119
+Job ID: 6fa0ea98b1f2435d8993716c69819c4d
+Function: get_document
+Original line: 383
+Operator: core/ReplaceTrueWithFalse
+Occurrence: 9
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/6fa0ea98b1f2435d8993716c69819c4d
+@@ -380,7 +380,7 @@
+             mimetype="application/pdf",
+             as_attachment=False,
+             download_name=row.name if row.name.lower().endswith(".pdf") else f"{row.name}.pdf",
+-            conditional=True,   # enables 304 if If-Modified-Since/Range handling
++            conditional=False,   # enables 304 if If-Modified-Since/Range handling
+             max_age=0,
+             last_modified=file_path.stat().st_mtime,
+         )
+
+======================================================================
+MUTANT 41/119
+Job ID: 4f7bcebdd45c4cbaa803c2bbda4fedb7
+Function: get_document
+Original line: 384
+Operator: core/NumberReplacer
+Occurrence: 73
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/4f7bcebdd45c4cbaa803c2bbda4fedb7
+@@ -381,7 +381,7 @@
+             as_attachment=False,
+             download_name=row.name if row.name.lower().endswith(".pdf") else f"{row.name}.pdf",
+             conditional=True,   # enables 304 if If-Modified-Since/Range handling
+-            max_age=0,
++            max_age= -1,
+             last_modified=file_path.stat().st_mtime,
+         )
+         # Strong validator
+
+======================================================================
+MUTANT 42/119
+Job ID: f0c6bf4276d1458b85658dd3ade864d5
+Function: get_document
+Original line: 384
+Operator: core/NumberReplacer
+Occurrence: 72
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/f0c6bf4276d1458b85658dd3ade864d5
+@@ -381,7 +381,7 @@
+             as_attachment=False,
+             download_name=row.name if row.name.lower().endswith(".pdf") else f"{row.name}.pdf",
+             conditional=True,   # enables 304 if If-Modified-Since/Range handling
+-            max_age=0,
++            max_age= 1,
+             last_modified=file_path.stat().st_mtime,
+         )
+         # Strong validator
+
+======================================================================
+MUTANT 43/119
+Job ID: a6b8c090002f4d65982e362aa1aa0945
+Function: get_document
+Original line: 388
+Operator: core/AddNot
+Occurrence: 19
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/a6b8c090002f4d65982e362aa1aa0945
+@@ -385,7 +385,7 @@
+             last_modified=file_path.stat().st_mtime,
+         )
+         # Strong validator
+-        if isinstance(row.sha256_hex, str) and row.sha256_hex:
++        if not isinstance(row.sha256_hex, str) and row.sha256_hex:
+             resp.set_etag(row.sha256_hex.lower())
+ 
+         resp.headers["Cache-Control"] = "private, max-age=0, must-revalidate"
+
+======================================================================
+MUTANT 44/119
+Job ID: 456ac222141a4e06b1534574b6c68821
+Function: get_document
+Original line: 388
+Operator: core/ReplaceAndWithOr
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/456ac222141a4e06b1534574b6c68821
+@@ -385,7 +385,7 @@
+             last_modified=file_path.stat().st_mtime,
+         )
+         # Strong validator
+-        if isinstance(row.sha256_hex, str) and row.sha256_hex:
++        if isinstance(row.sha256_hex, str) or row.sha256_hex:
+             resp.set_etag(row.sha256_hex.lower())
+ 
+         resp.headers["Cache-Control"] = "private, max-age=0, must-revalidate"
+
+======================================================================
+MUTANT 45/119
+Job ID: 91d5b34050b140da8634996459e8f3d9
+Function: upload_document
+Original line: 172
+Operator: core/AddNot
+Occurrence: 8
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/91d5b34050b140da8634996459e8f3d9
+@@ -169,7 +169,7 @@
+     @app.post("/api/upload-document")
+     @require_auth
+     def upload_document():
+-        if "file" not in request.files:
++        if not "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+         if not file or file.filename == "":
+
+======================================================================
+MUTANT 46/119
+Job ID: c19a98cc82074e9d8c7fddf553db2f59
+Function: upload_document
+Original line: 173
+Operator: core/NumberReplacer
+Occurrence: 32
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/c19a98cc82074e9d8c7fddf553db2f59
+@@ -170,7 +170,7 @@
+     @require_auth
+     def upload_document():
+         if "file" not in request.files:
+-            return jsonify({"error": "file is required (multipart/form-data)"}), 400
++            return jsonify({"error": "file is required (multipart/form-data)"}), 401
+         file = request.files["file"]
+         if not file or file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+
+======================================================================
+MUTANT 47/119
+Job ID: 6866d62599b84921b49fb99f9c2ad7a3
+Function: upload_document
+Original line: 173
+Operator: core/NumberReplacer
+Occurrence: 33
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/6866d62599b84921b49fb99f9c2ad7a3
+@@ -170,7 +170,7 @@
+     @require_auth
+     def upload_document():
+         if "file" not in request.files:
+-            return jsonify({"error": "file is required (multipart/form-data)"}), 400
++            return jsonify({"error": "file is required (multipart/form-data)"}), 399
+         file = request.files["file"]
+         if not file or file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+
+======================================================================
+MUTANT 48/119
+Job ID: 063286c6b4c04300b446504a7be82fa3
+Function: upload_document
+Original line: 175
+Operator: core/AddNot
+Occurrence: 9
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/063286c6b4c04300b446504a7be82fa3
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not not file or file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 49/119
+Job ID: 06feb4b03b9c48b79b97c5fb1098cf45
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceComparisonOperator_Eq_Gt
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/06feb4b03b9c48b79b97c5fb1098cf45
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not file or file.filename > "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 50/119
+Job ID: 0418b5cf297341b6b813d00ec3c6ad77
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceComparisonOperator_Eq_GtE
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/0418b5cf297341b6b813d00ec3c6ad77
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not file or file.filename >= "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 51/119
+Job ID: 291af393b18f4fb5b45a53c56353cddd
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceComparisonOperator_Eq_Is
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/291af393b18f4fb5b45a53c56353cddd
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not file or file.filename is "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 52/119
+Job ID: 9aa232e8822647daad63a3fdb54f377f
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceComparisonOperator_Eq_IsNot
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/9aa232e8822647daad63a3fdb54f377f
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not file or file.filename is not "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 53/119
+Job ID: e00e3608a4e649f988d8ebf29b76022a
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceComparisonOperator_Eq_Lt
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/e00e3608a4e649f988d8ebf29b76022a
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not file or file.filename < "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 54/119
+Job ID: 885c17224fc8441590e22d1244dc7afb
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceComparisonOperator_Eq_LtE
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/885c17224fc8441590e22d1244dc7afb
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not file or file.filename <= "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 55/119
+Job ID: 3bad14d9800644ab9c3d0213eee2f7c3
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceComparisonOperator_Eq_NotEq
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/3bad14d9800644ab9c3d0213eee2f7c3
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not file or file.filename != "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 56/119
+Job ID: 9e5601129e81417c9de68d4e480ae888
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceOrWithAnd
+Occurrence: 9
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/9e5601129e81417c9de68d4e480ae888
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if not file and file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 57/119
+Job ID: a785a9af7a934bc5a0007730056c846a
+Function: upload_document
+Original line: 175
+Operator: core/ReplaceUnaryOperator_Delete_Not
+Occurrence: 11
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/a785a9af7a934bc5a0007730056c846a
+@@ -172,7 +172,7 @@
+         if "file" not in request.files:
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+-        if not file or file.filename == "":
++        if  file or file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+
+======================================================================
+MUTANT 58/119
+Job ID: 1b769075e1b94f58bbc1fdbfdf027e4b
+Function: upload_document
+Original line: 176
+Operator: core/NumberReplacer
+Occurrence: 34
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/1b769075e1b94f58bbc1fdbfdf027e4b
+@@ -173,7 +173,7 @@
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+         if not file or file.filename == "":
+-            return jsonify({"error": "empty filename"}), 400
++            return jsonify({"error": "empty filename"}), 401
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+ 
+
+======================================================================
+MUTANT 59/119
+Job ID: db874a32bc76461ca69e975bf18a900c
+Function: upload_document
+Original line: 176
+Operator: core/NumberReplacer
+Occurrence: 35
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/db874a32bc76461ca69e975bf18a900c
+@@ -173,7 +173,7 @@
+             return jsonify({"error": "file is required (multipart/form-data)"}), 400
+         file = request.files["file"]
+         if not file or file.filename == "":
+-            return jsonify({"error": "empty filename"}), 400
++            return jsonify({"error": "empty filename"}), 399
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+ 
+
+======================================================================
+MUTANT 60/119
+Job ID: 51fd5fb6821d42d2aed9e6c5e0b07a86
+Function: upload_document
+Original line: 177
+Operator: core/AddNot
+Occurrence: 10
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/51fd5fb6821d42d2aed9e6c5e0b07a86
+@@ -174,7 +174,7 @@
+         file = request.files["file"]
+         if not file or file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+-        if not file.filename.lower().endswith(".pdf"):
++        if not not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+ 
+         file_header = file.stream.read(5)
+
+======================================================================
+MUTANT 61/119
+Job ID: 590a6a0f2e714f1c9779f40990d37066
+Function: upload_document
+Original line: 177
+Operator: core/ReplaceUnaryOperator_Delete_Not
+Occurrence: 12
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/590a6a0f2e714f1c9779f40990d37066
+@@ -174,7 +174,7 @@
+         file = request.files["file"]
+         if not file or file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+-        if not file.filename.lower().endswith(".pdf"):
++        if  file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+ 
+         file_header = file.stream.read(5)
+
+======================================================================
+MUTANT 62/119
+Job ID: 8045ae0c0a9948118cf7ea0bcbbf12a3
+Function: upload_document
+Original line: 178
+Operator: core/NumberReplacer
+Occurrence: 37
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/8045ae0c0a9948118cf7ea0bcbbf12a3
+@@ -175,7 +175,7 @@
+         if not file or file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+-            return jsonify({"error": "only PDF files are allowed"}), 415
++            return jsonify({"error": "only PDF files are allowed"}), 414
+ 
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+
+======================================================================
+MUTANT 63/119
+Job ID: d4b0b2b3baa3496b8bd3af9390606630
+Function: upload_document
+Original line: 178
+Operator: core/NumberReplacer
+Occurrence: 36
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/d4b0b2b3baa3496b8bd3af9390606630
+@@ -175,7 +175,7 @@
+         if not file or file.filename == "":
+             return jsonify({"error": "empty filename"}), 400
+         if not file.filename.lower().endswith(".pdf"):
+-            return jsonify({"error": "only PDF files are allowed"}), 415
++            return jsonify({"error": "only PDF files are allowed"}), 416
+ 
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+
+======================================================================
+MUTANT 64/119
+Job ID: 76061b89ccac43d88feba15fad0f48ba
+Function: upload_document
+Original line: 180
+Operator: core/NumberReplacer
+Occurrence: 38
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/76061b89ccac43d88feba15fad0f48ba
+@@ -177,7 +177,7 @@
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+ 
+-        file_header = file.stream.read(5)
++        file_header = file.stream.read( 6)
+         file.stream.seek(0)
+ 
+         if file_header != b"%PDF-":
+
+======================================================================
+MUTANT 65/119
+Job ID: cf58278f6dec4e02991fe95283339a8e
+Function: upload_document
+Original line: 180
+Operator: core/NumberReplacer
+Occurrence: 39
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/cf58278f6dec4e02991fe95283339a8e
+@@ -177,7 +177,7 @@
+         if not file.filename.lower().endswith(".pdf"):
+             return jsonify({"error": "only PDF files are allowed"}), 415
+ 
+-        file_header = file.stream.read(5)
++        file_header = file.stream.read( 4)
+         file.stream.seek(0)
+ 
+         if file_header != b"%PDF-":
+
+======================================================================
+MUTANT 66/119
+Job ID: 8eeb578aa75049caad20b4679faac0ec
+Function: upload_document
+Original line: 181
+Operator: core/NumberReplacer
+Occurrence: 41
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/8eeb578aa75049caad20b4679faac0ec
+@@ -178,7 +178,7 @@
+             return jsonify({"error": "only PDF files are allowed"}), 415
+ 
+         file_header = file.stream.read(5)
+-        file.stream.seek(0)
++        file.stream.seek( -1)
+ 
+         if file_header != b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+
+======================================================================
+MUTANT 67/119
+Job ID: 877ec2d75a2d4ed2b93c97853239bfc6
+Function: upload_document
+Original line: 181
+Operator: core/NumberReplacer
+Occurrence: 40
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/877ec2d75a2d4ed2b93c97853239bfc6
+@@ -178,7 +178,7 @@
+             return jsonify({"error": "only PDF files are allowed"}), 415
+ 
+         file_header = file.stream.read(5)
+-        file.stream.seek(0)
++        file.stream.seek( 1)
+ 
+         if file_header != b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+
+======================================================================
+MUTANT 68/119
+Job ID: 5b4d093c71ea4657835d5de64204791a
+Function: upload_document
+Original line: 183
+Operator: core/AddNot
+Occurrence: 11
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/5b4d093c71ea4657835d5de64204791a
+@@ -180,7 +180,7 @@
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+ 
+-        if file_header != b"%PDF-":
++        if not file_header != b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+ 
+         fname = secure_filename(file.filename)
+
+======================================================================
+MUTANT 69/119
+Job ID: b5ad00920839448ea5d9de2e954f821b
+Function: upload_document
+Original line: 183
+Operator: core/ReplaceComparisonOperator_NotEq_Eq
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/b5ad00920839448ea5d9de2e954f821b
+@@ -180,7 +180,7 @@
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+ 
+-        if file_header != b"%PDF-":
++        if file_header == b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+ 
+         fname = secure_filename(file.filename)
+
+======================================================================
+MUTANT 70/119
+Job ID: d5baefd8bb644a71bf5862028de1bed9
+Function: upload_document
+Original line: 183
+Operator: core/ReplaceComparisonOperator_NotEq_Gt
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/d5baefd8bb644a71bf5862028de1bed9
+@@ -180,7 +180,7 @@
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+ 
+-        if file_header != b"%PDF-":
++        if file_header > b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+ 
+         fname = secure_filename(file.filename)
+
+======================================================================
+MUTANT 71/119
+Job ID: a51301bf9e144f3c86bcd57a20ee62e4
+Function: upload_document
+Original line: 183
+Operator: core/ReplaceComparisonOperator_NotEq_GtE
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/a51301bf9e144f3c86bcd57a20ee62e4
+@@ -180,7 +180,7 @@
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+ 
+-        if file_header != b"%PDF-":
++        if file_header >= b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+ 
+         fname = secure_filename(file.filename)
+
+======================================================================
+MUTANT 72/119
+Job ID: f726f057c850436da096cfe6c46e5564
+Function: upload_document
+Original line: 183
+Operator: core/ReplaceComparisonOperator_NotEq_Is
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/f726f057c850436da096cfe6c46e5564
+@@ -180,7 +180,7 @@
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+ 
+-        if file_header != b"%PDF-":
++        if file_header is b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+ 
+         fname = secure_filename(file.filename)
+
+======================================================================
+MUTANT 73/119
+Job ID: 2b610e54f50843cd8edaa2c5580040e8
+Function: upload_document
+Original line: 183
+Operator: core/ReplaceComparisonOperator_NotEq_IsNot
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/2b610e54f50843cd8edaa2c5580040e8
+@@ -180,7 +180,7 @@
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+ 
+-        if file_header != b"%PDF-":
++        if file_header is not b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+ 
+         fname = secure_filename(file.filename)
+
+======================================================================
+MUTANT 74/119
+Job ID: 8399e8cec60e4b9d9c515d5c4c395c00
+Function: upload_document
+Original line: 183
+Operator: core/ReplaceComparisonOperator_NotEq_Lt
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/8399e8cec60e4b9d9c515d5c4c395c00
+@@ -180,7 +180,7 @@
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+ 
+-        if file_header != b"%PDF-":
++        if file_header < b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+ 
+         fname = secure_filename(file.filename)
+
+======================================================================
+MUTANT 75/119
+Job ID: 05c45993df1a41878b11f64a747fb9c0
+Function: upload_document
+Original line: 183
+Operator: core/ReplaceComparisonOperator_NotEq_LtE
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/05c45993df1a41878b11f64a747fb9c0
+@@ -180,7 +180,7 @@
+         file_header = file.stream.read(5)
+         file.stream.seek(0)
+ 
+-        if file_header != b"%PDF-":
++        if file_header <= b"%PDF-":
+             return jsonify({"error": "invalid PDF file"}), 400
+ 
+         fname = secure_filename(file.filename)
+
+======================================================================
+MUTANT 76/119
+Job ID: 93bd866235d04dc7b6a99d0b57f84604
+Function: upload_document
+Original line: 184
+Operator: core/NumberReplacer
+Occurrence: 42
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/93bd866235d04dc7b6a99d0b57f84604
+@@ -181,7 +181,7 @@
+         file.stream.seek(0)
+ 
+         if file_header != b"%PDF-":
+-            return jsonify({"error": "invalid PDF file"}), 400
++            return jsonify({"error": "invalid PDF file"}), 401
+ 
+         fname = secure_filename(file.filename)
+ 
+
+======================================================================
+MUTANT 77/119
+Job ID: fc1c8d7b9752484b82057ca557ebee29
+Function: upload_document
+Original line: 184
+Operator: core/NumberReplacer
+Occurrence: 43
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/fc1c8d7b9752484b82057ca557ebee29
+@@ -181,7 +181,7 @@
+         file.stream.seek(0)
+ 
+         if file_header != b"%PDF-":
+-            return jsonify({"error": "invalid PDF file"}), 400
++            return jsonify({"error": "invalid PDF file"}), 399
+ 
+         fname = secure_filename(file.filename)
+ 
+
+======================================================================
+MUTANT 78/119
+Job ID: ade1ec6d67a54aa6bd462b251919679b
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Add
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/ade1ec6d67a54aa6bd462b251919679b
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] + "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 79/119
+Job ID: 1c47290c42444799b682f1ce47586886
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Add
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/1c47290c42444799b682f1ce47586886
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" + g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 80/119
+Job ID: 9f1b8c4d2fe845ed984b68319e5fb0e4
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_BitAnd
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/9f1b8c4d2fe845ed984b68319e5fb0e4
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" & g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 81/119
+Job ID: db8b22ed7d064158ac21de085805ef53
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_BitAnd
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/db8b22ed7d064158ac21de085805ef53
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] & "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 82/119
+Job ID: 8d518ef9ff114a38aa409548dc95a86c
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_BitOr
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/8d518ef9ff114a38aa409548dc95a86c
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" | g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 83/119
+Job ID: 93f3890af6ab44b3b39412b62d0c659a
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_BitOr
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/93f3890af6ab44b3b39412b62d0c659a
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] | "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 84/119
+Job ID: 07fae46c520743ba8aafb3b696c8a3b5
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_BitXor
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/07fae46c520743ba8aafb3b696c8a3b5
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] ^ "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 85/119
+Job ID: 9417b2d275954e90a9bbc71282de6238
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_BitXor
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/9417b2d275954e90a9bbc71282de6238
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" ^ g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 86/119
+Job ID: 50ee696bb6ca4491b621f9632b413305
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_FloorDiv
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/50ee696bb6ca4491b621f9632b413305
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" // g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 87/119
+Job ID: f4051438959d4dcf98d51537f2c1850f
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_FloorDiv
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/f4051438959d4dcf98d51537f2c1850f
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] // "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 88/119
+Job ID: 061ef6adaedc4dcb8d5ec27e0e3f689d
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_LShift
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/061ef6adaedc4dcb8d5ec27e0e3f689d
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" << g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 89/119
+Job ID: cff954cd5d75434fb7687908b75b8d8c
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_LShift
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/cff954cd5d75434fb7687908b75b8d8c
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] << "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 90/119
+Job ID: 230d499cab7941ab8c89e4c1ccdb0f19
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Mod
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/230d499cab7941ab8c89e4c1ccdb0f19
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" % g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 91/119
+Job ID: 25170c0e5ac346799cc0051eb3e68fee
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Mod
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/25170c0e5ac346799cc0051eb3e68fee
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] % "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 92/119
+Job ID: eb39d6888df04ecdaeadbf7c0bfd3ef6
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Mul
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/eb39d6888df04ecdaeadbf7c0bfd3ef6
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] * "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 93/119
+Job ID: 2981d7a001d04612a620ea2f38078eca
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Mul
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/2981d7a001d04612a620ea2f38078eca
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" * g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 94/119
+Job ID: 4ae315619dc14a5984d8304b1eb8d838
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Pow
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/4ae315619dc14a5984d8304b1eb8d838
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" ** g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 95/119
+Job ID: ea62bdfc871d4ef7b3c812d706b88188
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Pow
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/ea62bdfc871d4ef7b3c812d706b88188
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] ** "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 96/119
+Job ID: f1f20b087498435d9d632b0ec7e2c33a
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_RShift
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/f1f20b087498435d9d632b0ec7e2c33a
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] >> "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 97/119
+Job ID: cca96ca7dd7042fbb4fd329032967604
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_RShift
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/cca96ca7dd7042fbb4fd329032967604
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" >> g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 98/119
+Job ID: 1f073d3e7e574fd38fb45b2d13970a89
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Sub
+Occurrence: 0
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/1f073d3e7e574fd38fb45b2d13970a89
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] - "files" / g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 99/119
+Job ID: cd803491947941e7ae3fcb31228b161e
+Function: upload_document
+Original line: 188
+Operator: core/ReplaceBinaryOperator_Div_Sub
+Occurrence: 1
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/cd803491947941e7ae3fcb31228b161e
+@@ -185,7 +185,7 @@
+ 
+         fname = secure_filename(file.filename)
+ 
+-        user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
++        user_dir = app.config["STORAGE_DIR"] / "files" - g.user["login"]
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+
+======================================================================
+MUTANT 100/119
+Job ID: 5b140288f3b444e8a388452f18f6ebeb
+Function: upload_document
+Original line: 189
+Operator: core/ReplaceTrueWithFalse
+Occurrence: 7
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/5b140288f3b444e8a388452f18f6ebeb
+@@ -186,7 +186,7 @@
+         fname = secure_filename(file.filename)
+ 
+         user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
+-        user_dir.mkdir(parents=True, exist_ok=True)
++        user_dir.mkdir(parents=False, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+
+======================================================================
+MUTANT 101/119
+Job ID: ea2ca1308f8d4ed696c4180ac47c82ef
+Function: upload_document
+Original line: 189
+Operator: core/ReplaceTrueWithFalse
+Occurrence: 8
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/ea2ca1308f8d4ed696c4180ac47c82ef
+@@ -186,7 +186,7 @@
+         fname = secure_filename(file.filename)
+ 
+         user_dir = app.config["STORAGE_DIR"] / "files" / g.user["login"]
+-        user_dir.mkdir(parents=True, exist_ok=True)
++        user_dir.mkdir(parents=True, exist_ok=False)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+
+======================================================================
+MUTANT 102/119
+Job ID: 48add6a8f9e2404d8a75d85f2995911d
+Function: upload_document
+Original line: 192
+Operator: core/ReplaceOrWithAnd
+Occurrence: 10
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/48add6a8f9e2404d8a75d85f2995911d
+@@ -189,7 +189,7 @@
+         user_dir.mkdir(parents=True, exist_ok=True)
+ 
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+-        final_name = request.form.get("name") or fname
++        final_name = request.form.get("name") and fname
+         stored_name = f"{ts}__{fname}"
+         stored_path = user_dir / stored_name
+         file.save(stored_path)
+
+======================================================================
+MUTANT 103/119
+Job ID: 2c5a3e3a3b8f4587bcf0c661af5d3d52
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_Add
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/2c5a3e3a3b8f4587bcf0c661af5d3d52
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir + stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 104/119
+Job ID: 8ff16ce58adb4ce1a672169cee9af257
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_BitAnd
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/8ff16ce58adb4ce1a672169cee9af257
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir & stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 105/119
+Job ID: 15d6012ca30c4b4d8492c26d3c53f78e
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_BitOr
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/15d6012ca30c4b4d8492c26d3c53f78e
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir | stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 106/119
+Job ID: 11259f7946be424b8bf4990caadebd3f
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_BitXor
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/11259f7946be424b8bf4990caadebd3f
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir ^ stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 107/119
+Job ID: 4354c65193cc41568392c573e9aa5217
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_FloorDiv
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/4354c65193cc41568392c573e9aa5217
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir // stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 108/119
+Job ID: 21d49fa56ea946d5a82e8be1e5e5d27e
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_LShift
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/21d49fa56ea946d5a82e8be1e5e5d27e
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir << stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 109/119
+Job ID: 7f9b56cfc1f346379f337275cf4bcb32
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_Mod
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/7f9b56cfc1f346379f337275cf4bcb32
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir % stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 110/119
+Job ID: 77a2ba7f62df422cb9bf8c953b4366ac
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_Mul
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/77a2ba7f62df422cb9bf8c953b4366ac
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir * stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 111/119
+Job ID: 1c87ffc943264486b46467aa2e8151bb
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_Pow
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/1c87ffc943264486b46467aa2e8151bb
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir ** stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 112/119
+Job ID: 2ab3c5f3ec4c41b18f9cd3c2fa0d3e6d
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_RShift
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/2ab3c5f3ec4c41b18f9cd3c2fa0d3e6d
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir >> stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 113/119
+Job ID: e1fb5994e3804b4fb1125401e113a57f
+Function: upload_document
+Original line: 194
+Operator: core/ReplaceBinaryOperator_Div_Sub
+Occurrence: 2
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/e1fb5994e3804b4fb1125401e113a57f
+@@ -191,7 +191,7 @@
+         ts = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+         final_name = request.form.get("name") or fname
+         stored_name = f"{ts}__{fname}"
+-        stored_path = user_dir / stored_name
++        stored_path = user_dir - stored_name
+         file.save(stored_path)
+ 
+         sha_hex = _sha256_file(stored_path)
+
+======================================================================
+MUTANT 114/119
+Job ID: 16b944ce3aa6437ba8ca50eb67b1bddd
+Function: upload_document
+Original line: 224
+Operator: core/ExceptionReplacer
+Occurrence: 6
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/16b944ce3aa6437ba8ca50eb67b1bddd
+@@ -221,7 +221,7 @@
+                     """),
+                     {"id": did},
+                 ).one()
+-        except Exception as e:
++        except CosmicRayTestingException as e:
+             return jsonify({"error": f"database error: {str(e)}"}), 503
+ 
+         return jsonify({
+
+======================================================================
+MUTANT 115/119
+Job ID: d1b45a203dae428587730aefe08b6d02
+Function: upload_document
+Original line: 225
+Operator: core/NumberReplacer
+Occurrence: 45
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/d1b45a203dae428587730aefe08b6d02
+@@ -222,7 +222,7 @@
+                     {"id": did},
+                 ).one()
+         except Exception as e:
+-            return jsonify({"error": f"database error: {str(e)}"}), 503
++            return jsonify({"error": f"database error: {str(e)}"}), 502
+ 
+         return jsonify({
+             "id": int(row.id),
+
+======================================================================
+MUTANT 116/119
+Job ID: 704bb1156dc242089e2ecb917d70fad4
+Function: upload_document
+Original line: 225
+Operator: core/NumberReplacer
+Occurrence: 44
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/704bb1156dc242089e2ecb917d70fad4
+@@ -222,7 +222,7 @@
+                     {"id": did},
+                 ).one()
+         except Exception as e:
+-            return jsonify({"error": f"database error: {str(e)}"}), 503
++            return jsonify({"error": f"database error: {str(e)}"}), 504
+ 
+         return jsonify({
+             "id": int(row.id),
+
+======================================================================
+MUTANT 117/119
+Job ID: 24aa433d539b4b62941d286f3cc9357f
+Function: upload_document
+Original line: 230
+Operator: core/AddNot
+Occurrence: 12
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/24aa433d539b4b62941d286f3cc9357f
+@@ -227,7 +227,7 @@
+         return jsonify({
+             "id": int(row.id),
+             "name": row.name,
+-            "creation": row.creation.isoformat() if hasattr(row.creation, "isoformat") else str(row.creation),
++            "creation": row.creation.isoformat() if not hasattr(row.creation, "isoformat") else str(row.creation),
+             "sha256": row.sha256_hex,
+             "size": int(row.size),
+         }), 201
+
+======================================================================
+MUTANT 118/119
+Job ID: 78d2f46c364e407d983d2a0c70609cce
+Function: upload_document
+Original line: 233
+Operator: core/NumberReplacer
+Occurrence: 47
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/78d2f46c364e407d983d2a0c70609cce
+@@ -230,7 +230,7 @@
+             "creation": row.creation.isoformat() if hasattr(row.creation, "isoformat") else str(row.creation),
+             "sha256": row.sha256_hex,
+             "size": int(row.size),
+-        }), 201
++        }), 200
+ 
+     # GET /api/list-documents
+     @app.get("/api/list-documents")
+
+======================================================================
+MUTANT 119/119
+Job ID: bc9e9e4fde18473d829c574a810c8421
+Function: upload_document
+Original line: 233
+Operator: core/NumberReplacer
+Occurrence: 46
+Result: SURVIVED
+----------------------------------------------------------------------
+--- original/src/server.py
++++ mutant/bc9e9e4fde18473d829c574a810c8421
+@@ -230,7 +230,7 @@
+             "creation": row.creation.isoformat() if hasattr(row.creation, "isoformat") else str(row.creation),
+             "sha256": row.sha256_hex,
+             "size": int(row.size),
+-        }), 201
++        }), 202
+ 
+     # GET /api/list-documents
+     @app.get("/api/list-documents")
