@@ -490,6 +490,9 @@ def create_app():
             return jsonify({"error": "invalid document id"}), 400
 
         except Exception:
+            app.logger.exception(
+                "Database error while fetching document for deletion"
+            )
             return jsonify({"error": "database error"}), 503
 
         if not row:
