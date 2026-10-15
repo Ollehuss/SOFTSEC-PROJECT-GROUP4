@@ -6,7 +6,106 @@ from server import app
 import os
 from itsdangerous import URLSafeTimedSerializer
 from types import SimpleNamespace
+import os
+from itsdangerous import URLSafeTimedSerializer
+from types import SimpleNamespace
 from unittest.mock import MagicMock
+from sqlalchemy.exc import IntegrityError
+
+
+class FakeUserResult:
+    def __init__(self, row=None, lastrowid=None):
+        self.row = row
+        self.lastrowid = lastrowid
+
+    def first(self):
+        return self.row
+
+    def one(self):
+        if self.row is None:
+            raise RuntimeError("Expected one user")
+        return self.row
+
+
+class FakeUserConnection:
+    def __init__(self, engine):
+        self.engine = engine
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        return False
+
+    def execute(self, query, parameters=None):
+        sql = str(query).lower()
+        parameters = parameters or {}
+
+        if "insert into users" in sql:
+            email = parameters["email"]
+            login = parameters["login"]
+
+            for user in self.engine.users.values():
+                if user.email == email or user.login == login:
+                    raise IntegrityError(
+                        str(query), parameters, Exception("duplicate user")
+                    )
+
+            user_id = self.engine.next_id
+            self.engine.next_id += 1
+
+            user = SimpleNamespace(
+                id=user_id,
+                email=email,
+                login=login,
+                hpassword=parameters["hpw"],
+            )
+            self.engine.users[user_id] = user
+
+            return FakeUserResult(lastrowid=user_id)
+
+        if "where id = :id" in sql:
+            user = self.engine.users.get(parameters["id"])
+
+            if user is None:
+                return FakeUserResult()
+
+            return FakeUserResult(
+                SimpleNamespace(
+                    id=user.id,
+                    email=user.email,
+                    login=user.login,
+                )
+            )
+
+        if "where email = :email" in sql:
+            for user in self.engine.users.values():
+                if user.email == parameters["email"]:
+                    return FakeUserResult(user)
+
+            return FakeUserResult()
+
+        raise RuntimeError(f"Unexpected SQL query: {query}")
+
+
+class FakeUserEngine:
+    def __init__(self):
+        self.users = {}
+        self.next_id = 1
+
+    def connect(self):
+        return FakeUserConnection(self)
+
+    def begin(self):
+        return FakeUserConnection(self)
+
+
+@pytest.fixture
+def fake_user_db(monkeypatch):
+    engine = FakeUserEngine()
+    monkeypatch.setitem(app.config, "_ENGINE", engine)
+    return engine
+
 
 def test_healthz_route():
     client = app.test_client()
@@ -200,7 +299,7 @@ def unique_user():
 
 
 
-def test_create_user_success():
+def test_create_user_success(fake_user_db):
     client = app.test_client()
     user = unique_user()
 
@@ -217,7 +316,7 @@ def test_create_user_success():
 
 
 
-def test_create_user_duplicate():
+def test_create_user_duplicate(fake_user_db):
     client = app.test_client()
     user = unique_user()
 
@@ -228,7 +327,7 @@ def test_create_user_duplicate():
     assert second_response.status_code == 409
 
 
-def test_login_success():
+def test_login_success(fake_user_db):
     client = app.test_client()
     user = unique_user()
 
@@ -250,7 +349,7 @@ def test_login_success():
     assert data["expires_in"] > 0
 
 
-def test_login_wrong_password():
+def test_login_wrong_password(fake_user_db):
     client = app.test_client()
     user = unique_user()
 
@@ -267,3 +366,142 @@ def test_login_wrong_password():
 
     assert response.status_code == 401
     assert response.get_json()["error"] == "invalid credentials"
+
+
+def test_create_user_rejects_missing_required_fields(fake_user_db):
+    with app.test_client() as client:
+        response = client.post(
+            "/api/create-user",
+            json={"email": "test@example.com"},
+        )
+
+    assert response.status_code == 400
+    assert "error" in response.get_json()
+
+
+def test_login_rejects_missing_required_fields(fake_user_db):
+    with app.test_client() as client:
+        response = client.post(
+            "/api/login",
+            json={"email": "test@example.com"},
+        )
+
+    assert response.status_code == 400
+    assert "error" in response.get_json()
+
+
+def test_login_rejects_unknown_email(fake_user_db):
+    with app.test_client() as client:
+        response = client.post(
+            "/api/login",
+            json={
+                "email": "unknown@example.com",
+                "password": "SomePassword123!",
+            },
+        )
+
+    assert response.status_code == 401
+    assert response.get_json()["error"] == "invalid credentials"
+
+
+def test_delete_document_returns_503_when_database_lookup_fails(monkeypatch):
+    from types import SimpleNamespace
+
+    class FailingConnection:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            return False
+
+        def execute(self, query, parameters=None):
+            raise RuntimeError("Simulated database failure")
+
+    class FailingEngine:
+        def connect(self):
+            return FailingConnection()
+
+    # Make the endpoint use our mock database.
+    monkeypatch.setitem(app.config, "_ENGINE", FailingEngine())
+
+    # Create a valid authentication token.
+    serializer = URLSafeTimedSerializer(
+        os.environ["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+    response = client.post(
+        "/api/delete-document?id=1",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 503
+    assert response.get_json()["error"] == "database error"
+
+
+def test_delete_document_returns_503_when_delete_fails(monkeypatch, tmp_path):
+    class FakeResult:
+        def first(self):
+            return SimpleNamespace(
+                id=1,
+                ownerid=1,
+                path="test-document.pdf",
+            )
+
+    class FakeConnection:
+        def __init__(self, fail_on_delete=False):
+            self.fail_on_delete = fail_on_delete
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            return False
+
+        def execute(self, query, parameters=None):
+            sql = str(query).lower()
+
+            if "select" in sql:
+                return FakeResult()
+
+            if "delete from documents" in sql:
+                raise RuntimeError("Simulated delete failure")
+
+            raise RuntimeError(f"Unexpected SQL: {query}")
+
+    class FakeEngine:
+        def connect(self):
+            return FakeConnection()
+
+        def begin(self):
+            return FakeConnection(fail_on_delete=True)
+
+    monkeypatch.setitem(app.config, "_ENGINE", FakeEngine())
+    monkeypatch.setitem(app.config, "STORAGE_DIR", str(tmp_path))
+
+    serializer = URLSafeTimedSerializer(
+        os.environ["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+    response = client.delete(
+        "/api/delete-document/1",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 503
+    assert response.get_json()["error"].startswith(
+        "database error during delete:"
+    )
