@@ -25,13 +25,15 @@ if not CASES:
 # --------- fixtures ----------
 @pytest.fixture(scope="session")
 def sample_pdf_path(tmp_path_factory) -> Path:
-    """Minimal but recognizable PDF bytes."""
+    """Create a valid one-page PDF for watermarking tests."""
+    import fitz  # PyMuPDF
+
     pdf = tmp_path_factory.mktemp("pdfs") / "sample.pdf"
-    pdf.write_bytes(
-        b"%PDF-1.4\n"
-        b"1 0 obj\n<< /Type /Catalog >>\nendobj\n"
-        b"%%EOF\n"
-    )
+
+    with fitz.open() as doc:
+        doc.new_page()
+        doc.save(str(pdf))
+
     return pdf
 
 @pytest.fixture(scope="session")
