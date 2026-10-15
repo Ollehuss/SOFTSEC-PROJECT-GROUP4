@@ -505,3 +505,333 @@ def test_delete_document_returns_503_when_delete_fails(monkeypatch, tmp_path):
     assert response.get_json()["error"].startswith(
         "database error during delete:"
     )
+
+
+def test_upload_document_success(tmp_path, monkeypatch):
+    import io
+    import hashlib
+    import datetime as dt
+
+    pdf_content = b"%PDF-1.4\nTest PDF content\n"
+    expected_hash = hashlib.sha256(pdf_content).hexdigest()
+
+    monkeypatch.setitem(app.config, "STORAGE_DIR", tmp_path)
+
+    mock_conn = MagicMock()
+
+    def execute_query(query, params=None):
+        sql = str(query).lower()
+        result = MagicMock()
+
+        if "last_insert_id()" in sql:
+            result.scalar.return_value = 42
+        elif "select id, name, creation" in sql:
+            result.one.return_value = SimpleNamespace(
+                id=42,
+                name="uploaded.pdf",
+                creation=dt.datetime(2026, 10, 15),
+                sha256_hex=expected_hash.upper(),
+                size=len(pdf_content),
+            )
+
+        return result
+
+    mock_conn.execute.side_effect = execute_query
+
+    mock_engine = MagicMock()
+    mock_engine.begin.return_value.__enter__.return_value = mock_conn
+    monkeypatch.setitem(app.config, "_ENGINE", mock_engine)
+
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+    response = client.post(
+        "/api/upload-document",
+        data={
+            "file": (io.BytesIO(pdf_content), "uploaded.pdf"),
+        },
+        headers={"Authorization": f"Bearer {token}"},
+        content_type="multipart/form-data",
+    )
+
+    assert response.status_code == 201, response.get_json()
+
+    data = response.get_json()
+    assert data["id"] == 42
+    assert data["name"] == "uploaded.pdf"
+    assert data["size"] == len(pdf_content)
+    assert data["sha256"] == expected_hash.upper()
+
+    stored_files = list((tmp_path / "files" / "test-user").glob("*.pdf"))
+    assert len(stored_files) == 1
+    assert stored_files[0].read_bytes() == pdf_content
+
+    queries = [
+        str(call.args[0]).lower()
+        for call in mock_conn.execute.call_args_list
+    ]
+    assert any("insert into documents" in query for query in queries)
+
+
+def test_upload_document_rejects_invalid_pdf(tmp_path, monkeypatch):
+    import io
+
+    monkeypatch.setitem(app.config, "STORAGE_DIR", tmp_path)
+
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+
+    response = client.post(
+        "/api/upload-document",
+        data={
+            "file": (
+                io.BytesIO(b"This is not a real PDF"),
+                "fake.pdf",
+            ),
+        },
+        headers={"Authorization": f"Bearer {token}"},
+        content_type="multipart/form-data",
+    )
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "invalid PDF file"
+
+    assert not list(tmp_path.rglob("*.pdf"))
+
+
+def test_get_document_success(tmp_path, monkeypatch):
+    pdf_content = b"%PDF-1.4\nTest document retrieval\n"
+    pdf_file = tmp_path / "document.pdf"
+    pdf_file.write_bytes(pdf_content)
+
+    monkeypatch.setitem(app.config, "STORAGE_DIR", tmp_path)
+
+    document = SimpleNamespace(
+        id=42,
+        name="document.pdf",
+        path=str(pdf_file),
+        sha256_hex="abc123",
+        size=len(pdf_content),
+    )
+
+    mock_conn = MagicMock()
+    mock_conn.execute.return_value.first.return_value = document
+
+    mock_engine = MagicMock()
+    mock_engine.connect.return_value.__enter__.return_value = mock_conn
+    monkeypatch.setitem(app.config, "_ENGINE", mock_engine)
+
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+    response = client.get(
+        "/api/get-document/42",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 200
+    assert response.data == pdf_content
+    assert response.mimetype == "application/pdf"
+
+    query_call = mock_conn.execute.call_args_list[0]
+    query = str(query_call.args[0])
+    params = query_call.args[1]
+
+    assert "ownerid = :uid" in query
+    assert params["id"] == 42
+    assert params["uid"] == 1
+
+
+def test_get_document_rejects_path_outside_storage(tmp_path, monkeypatch):
+    # Create two separate directories.
+    storage_dir = tmp_path / "storage"
+    storage_dir.mkdir()
+
+    outside_dir = tmp_path / "outside"
+    outside_dir.mkdir()
+    outside_pdf = outside_dir / "private.pdf"
+    outside_pdf.write_bytes(b"%PDF-1.4\nPrivate document\n")
+
+    monkeypatch.setitem(app.config, "STORAGE_DIR", storage_dir)
+
+    document = SimpleNamespace(
+        id=42,
+        name="private.pdf",
+        path=str(outside_pdf),
+        sha256_hex="abc123",
+        size=outside_pdf.stat().st_size,
+    )
+
+    mock_conn = MagicMock()
+    mock_conn.execute.return_value.first.return_value = document
+    mock_engine = MagicMock()
+    mock_engine.connect.return_value.__enter__.return_value = mock_conn
+    monkeypatch.setitem(app.config, "_ENGINE", mock_engine)
+
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+    response = client.get(
+        "/api/get-document/42",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 500
+    assert response.get_json()["error"] == "document path invalid"
+    assert outside_pdf.exists()
+
+
+def test_get_document_missing_id():
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+
+    response = client.get(
+        "/api/get-document",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "document id required"
+
+
+def test_upload_document_missing_file():
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    response = app.test_client().post(
+        "/api/upload-document",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 400
+
+def test_delete_document_missing_id():
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    response = app.test_client().delete(
+        "/api/delete-document",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 400
+
+
+def test_delete_rejects_path_outside_storage(tmp_path, monkeypatch):
+    outside_file = tmp_path / "private.pdf"
+    outside_file.write_bytes(b"%PDF-1.4\n")
+
+    storage = tmp_path / "storage"
+    storage.mkdir()
+    monkeypatch.setitem(app.config, "STORAGE_DIR", str(storage))
+
+    mock_conn = MagicMock()
+    mock_conn.execute.return_value.first.return_value = SimpleNamespace(
+        id=123, path=str(outside_file)
+    )
+
+    mock_engine = MagicMock()
+    mock_engine.connect.return_value.__enter__.return_value = mock_conn
+    monkeypatch.setitem(app.config, "_ENGINE", mock_engine)
+
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"], salt="tatou-auth"
+    )
+    token = serializer.dumps({
+        "uid": 1, "login": "test-user", "email": "test@example.com"
+    })
+
+    response = app.test_client().delete(
+        "/api/delete-document/123",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 200
+    assert response.get_json()["file_deleted"] is False
+    assert outside_file.exists()
+
+
+def test_get_document_file_missing(tmp_path, monkeypatch):
+    pdf_file = tmp_path / "missing.pdf"
+    monkeypatch.setitem(app.config, "STORAGE_DIR", tmp_path)
+
+    document = SimpleNamespace(id=42, path=str(pdf_file))
+
+    mock_conn = MagicMock()
+    mock_conn.execute.return_value.first.return_value = document
+
+    mock_engine = MagicMock()
+    mock_engine.connect.return_value.__enter__.return_value = mock_conn
+    monkeypatch.setitem(app.config, "_ENGINE", mock_engine)
+
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"], salt="tatou-auth"
+    )
+    token = serializer.dumps({
+        "uid": 1, "login": "test-user", "email": "test@example.com"
+    })
+
+    response = app.test_client().get(
+        "/api/get-document/42",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 410
+    assert response.get_json()["error"] == "file missing on disk"

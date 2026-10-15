@@ -469,12 +469,12 @@ def create_app():
                 or request.args.get("documentid")
                 or (request.is_json and (request.get_json(silent=True) or {}).get("id"))
             )
-        try:
-            doc_id = document_id
-        except (TypeError, ValueError):
+        if document_id is None or document_id is False or document_id == "":
             return jsonify({"error": "document id required"}), 400
 
-        # Fetch the document (enforce ownership)
+        doc_id = document_id
+
+
         try:
             doc_id = int(doc_id)
 

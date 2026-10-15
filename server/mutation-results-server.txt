@@ -1,0 +1,213 @@
+TATOU API MUTATION TESTING - INITIAL RESULTS
+=================================================================
+
+Tool: Cosmic Ray 8.7.0
+Target: src/server.py
+Tests: test/test_api.py
+Scope: document upload, retrieval, deletion, path safety
+
+Total mutants: 176
+Killed: 57
+Survived: 119
+Mutation score: 32.4%
+
+
+=================================================================
+FUNCTION: _safe_resolve_under_storage
+Killed: 13 | Survived: 4
+=================================================================
+
+SURVIVED  | Line  446 | core/AddNot                                      | bf3870ed7a274cd49f2666863ff33f7b
+SURVIVED  | Line  446 | core/ReplaceUnaryOperator_Delete_Not             | ee719d019fc844cd9cda34858a2b910e
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_Add               | a7d58e15f33f4bd6b4bf1a5735337617
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_BitAnd            | 039008ae7afd4e24a8998b1b4d618edc
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_BitOr             | 41f6fa6f4d6945a89cb2682365e22849
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_BitXor            | 2763925f2bd14392af1fe85bc59d2a58
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_FloorDiv          | b4996ecdff674437893430c84c5d25f2
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_LShift            | cb1e48cf37bf4318a3f40cc71f6ae73b
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_Mod               | d0b4082c1c164b338fea186ff5c6b159
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_Mul               | 668c996cc31348639d929d38e857dae4
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_Pow               | 03be7a8122cd4744a3df2738ad834c54
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_RShift            | 258481eb8f4543b8b7420ff8ca164578
+KILLED    | Line  447 | core/ReplaceBinaryOperator_Div_Sub               | 7a47a15bb1a342909a0df165c79a6cf2
+SURVIVED  | Line  450 | core/AddNot                                      | 2e31116374314560acfcb4c9156cd30b
+KILLED    | Line  451 | core/AddNot                                      | 44e9d6179fd247e09a12eda5606c3f1e
+KILLED    | Line  451 | core/ReplaceUnaryOperator_Delete_Not             | b2f688c9cf28458f884a0d80ede4c768
+SURVIVED  | Line  456 | core/ExceptionReplacer                           | e750ed35bcc849c9bcd26f56d84ab85c
+
+=================================================================
+FUNCTION: delete_document
+Killed: 33 | Survived: 12
+=================================================================
+
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_Add             | 6c03f0a92e2044cb992aca81b9d8a53c
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_BitAnd          | 6143797b0b5346788cb207c628e95597
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_BitXor          | cb6703f7b4dd4d2082ac9f4c05762aa5
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_Div             | fba19cd8f3fa4591b458cbd8b42d8510
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_FloorDiv        | 12b2a4194c4b4f91aeb2b912b1e70694
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_LShift          | db954d5de37c4fe3bf357480fb0ac0b3
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_Mod             | 6220a5a74ee84ea995b5600ddfc43dda
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_Mul             | 867652ce39344e68910ca9ba42156b08
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_Pow             | a87376d3e03a42d4a92fc134f6662baf
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_RShift          | c8699cb076a94ed08935c0e2494373a8
+KILLED    | Line  464 | core/ReplaceBinaryOperator_BitOr_Sub             | 06da672b84244f8baef28a2995f66f90
+KILLED    | Line  466 | core/AddNot                                      | 3c41d83c251c4bed9653256c657d8136
+KILLED    | Line  466 | core/ReplaceUnaryOperator_Delete_Not             | b7f68b2591de44dc8a31fd5a2ec5c5ab
+KILLED    | Line  469 | core/ReplaceOrWithAnd                            | 573d1f815aaa4ec4810e433de549e3f4
+SURVIVED  | Line  470 | core/ReplaceAndWithOr                            | 6dde3c7116384d108c8e67775ec660bf
+SURVIVED  | Line  470 | core/ReplaceOrWithAnd                            | 2d595174055e4624883094c812efab29
+SURVIVED  | Line  470 | core/ReplaceOrWithAnd                            | 85b6e57586e642518cf2ab800728b35f
+SURVIVED  | Line  470 | core/ReplaceTrueWithFalse                        | 9f1ca7d115534ed999e40393d041e7ed
+SURVIVED  | Line  474 | core/ExceptionReplacer                           | 6e5d4b67e78b469db1ccee77dcda325e
+SURVIVED  | Line  474 | core/ExceptionReplacer                           | 571ace9f886e495398c4d0f88aceb153
+SURVIVED  | Line  475 | core/NumberReplacer                              | b94e60754c6a4df78693abcd3c8ff1cc
+SURVIVED  | Line  475 | core/NumberReplacer                              | 1e8f96b864c04235b7ae2e0f9bcf7223
+KILLED    | Line  497 | core/ExceptionReplacer                           | 5cfd10b48e184003b186db97702d2a62
+KILLED    | Line  498 | core/NumberReplacer                              | db251db8ee1444ca89b9b76bed132641
+KILLED    | Line  498 | core/NumberReplacer                              | f42417f4322d484ab7fcb7cc97c6179d
+KILLED    | Line  500 | core/ExceptionReplacer                           | 553311e387a844a4957cd1a8d9ef83ef
+KILLED    | Line  504 | core/NumberReplacer                              | 123bd3054aa544b6b21161b618b29022
+KILLED    | Line  504 | core/NumberReplacer                              | c07a1e14e018477e8e3e3afc52f79f85
+KILLED    | Line  506 | core/AddNot                                      | 0607d52574524a578feef9f717016227
+KILLED    | Line  506 | core/ReplaceUnaryOperator_Delete_Not             | de70d01e0e92423fad6164748216ed24
+KILLED    | Line  508 | core/NumberReplacer                              | fb06519b38544b01ae81f198887437bf
+KILLED    | Line  508 | core/NumberReplacer                              | 0ef2f3e49a5a4568b3b3fdb8bea5c355
+SURVIVED  | Line  512 | core/ReplaceFalseWithTrue                        | 6934b93a07e248c1a13f07a36f59ef96
+KILLED    | Line  513 | core/ReplaceFalseWithTrue                        | af571f4e051f4cba921fff06ce620c09
+KILLED    | Line  517 | core/AddNot                                      | e25788e95de0478e8f7510a729b073aa
+KILLED    | Line  520 | core/ReplaceTrueWithFalse                        | 95d47021e61d47dea1dd87ca1f611b01
+SURVIVED  | Line  521 | core/ExceptionReplacer                           | 9eb73c24fc724dc3bf02c553cbb675ad
+SURVIVED  | Line  525 | core/ReplaceTrueWithFalse                        | 3f3a49f2ba5b4bc8ba5614374446b673
+SURVIVED  | Line  526 | core/ExceptionReplacer                           | a8037254cee142f0bcba8900a2965896
+KILLED    | Line  538 | core/ExceptionReplacer                           | 7ac1c12525394fe79754d8152bde2312
+KILLED    | Line  539 | core/NumberReplacer                              | 6e2fffa90672471f8a21d693adc24dbe
+KILLED    | Line  539 | core/NumberReplacer                              | d9b4ea6d60a045c6a4982a2186ef2e41
+KILLED    | Line  542 | core/ReplaceTrueWithFalse                        | 3c0de8647ebe4496aa593ca8e663c518
+KILLED    | Line  547 | core/NumberReplacer                              | d67e973ec2eb409ea8769b8c53addcd5
+KILLED    | Line  547 | core/NumberReplacer                              | a04872b07c1649af862c9bd33d9062b6
+
+=================================================================
+FUNCTION: get_document
+Killed: 11 | Survived: 28
+=================================================================
+
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_Add             | 709264dd67b0416db6541ab4d5ca58e9
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_BitAnd          | 687ac2af4b0941deacebbec0efcd5d16
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_BitXor          | 40f397139cf44bc2a3252c5176d6800d
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_Div             | dcfabaa1d5bb4ae6b721648fdc431a24
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_FloorDiv        | ef5fe29c71d341a8bbcfc356dbf8c963
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_LShift          | 067579d3591b4ac2a3938abec4825fea
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_Mod             | 3708cae7374a45a09ce4a50be1c53402
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_Mul             | dedadf0462a14b6f8f464e9e70d52529
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_Pow             | 17767b73a0ae4ec0b8cd00f5ec0d6ad7
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_RShift          | 4fb9b30dd48449a0ad9f663b8dbc6c9f
+KILLED    | Line  337 | core/ReplaceBinaryOperator_BitOr_Sub             | 696f01b61ed3431d908f0b484d52836d
+SURVIVED  | Line  340 | core/AddNot                                      | 341bfc59f2424a28be217a3b63d5c6c9
+SURVIVED  | Line  340 | core/ReplaceComparisonOperator_Is_IsNot          | c3e3f86c6b1a43acb51861e9e9a9cefd
+SURVIVED  | Line  341 | core/ReplaceOrWithAnd                            | c280347f0d7c4cd1b8f631c411fd887b
+SURVIVED  | Line  344 | core/ExceptionReplacer                           | 97f070c1a9cd49dfa3400702c8dfc5bd
+SURVIVED  | Line  344 | core/ExceptionReplacer                           | e93a142fdef640cebcfd20bf68117edf
+SURVIVED  | Line  345 | core/NumberReplacer                              | 29f7838231424f9daf66b49818cd8dc6
+SURVIVED  | Line  345 | core/NumberReplacer                              | cf4c84fd87404adf9858215aab1652f5
+SURVIVED  | Line  358 | core/ExceptionReplacer                           | 7d4d04a3102342db97fed2cdd83f3634
+SURVIVED  | Line  359 | core/NumberReplacer                              | 8305ce168d9f4f8aad6ec6499619c3d7
+SURVIVED  | Line  359 | core/NumberReplacer                              | 72d576c4d1464e1c83eff8aa5fd8e1c8
+SURVIVED  | Line  362 | core/AddNot                                      | 0c296f55234841a4b70a92005d3b1760
+SURVIVED  | Line  362 | core/ReplaceUnaryOperator_Delete_Not             | f802526c706741bb82641fbf8a13fd46
+SURVIVED  | Line  363 | core/NumberReplacer                              | 0cbb32005fe84b4f89cf2a1a7741a7d0
+SURVIVED  | Line  363 | core/NumberReplacer                              | 9637a88bc18849e0a9ad4451613fbdd9
+SURVIVED  | Line  370 | core/ExceptionReplacer                           | 620f28c47f1047d99f5d9897db9388c7
+SURVIVED  | Line  372 | core/NumberReplacer                              | 05f172dd841142329d9152141f5cb460
+SURVIVED  | Line  372 | core/NumberReplacer                              | 878281cc32ea409589ac8e2e9305b189
+SURVIVED  | Line  374 | core/AddNot                                      | 253c965c20a746499868445ac53fd672
+SURVIVED  | Line  374 | core/ReplaceUnaryOperator_Delete_Not             | 43345bce66b242d3a54d40ee74c78513
+SURVIVED  | Line  375 | core/NumberReplacer                              | 4c969354e2864d9c9b22bb1d2e733383
+SURVIVED  | Line  375 | core/NumberReplacer                              | c75b3c3dab634e62b2165fcde246f783
+SURVIVED  | Line  381 | core/ReplaceFalseWithTrue                        | 54566e9bd9304bdfae53c3adbc7b1fac
+SURVIVED  | Line  382 | core/AddNot                                      | 32c79625b9554371ba3638757828385b
+SURVIVED  | Line  383 | core/ReplaceTrueWithFalse                        | 6fa0ea98b1f2435d8993716c69819c4d
+SURVIVED  | Line  384 | core/NumberReplacer                              | f0c6bf4276d1458b85658dd3ade864d5
+SURVIVED  | Line  384 | core/NumberReplacer                              | 4f7bcebdd45c4cbaa803c2bbda4fedb7
+SURVIVED  | Line  388 | core/AddNot                                      | a6b8c090002f4d65982e362aa1aa0945
+SURVIVED  | Line  388 | core/ReplaceAndWithOr                            | 456ac222141a4e06b1534574b6c68821
+
+=================================================================
+FUNCTION: upload_document
+Killed: 0 | Survived: 75
+=================================================================
+
+SURVIVED  | Line  172 | core/AddNot                                      | 91d5b34050b140da8634996459e8f3d9
+SURVIVED  | Line  173 | core/NumberReplacer                              | c19a98cc82074e9d8c7fddf553db2f59
+SURVIVED  | Line  173 | core/NumberReplacer                              | 6866d62599b84921b49fb99f9c2ad7a3
+SURVIVED  | Line  175 | core/AddNot                                      | 063286c6b4c04300b446504a7be82fa3
+SURVIVED  | Line  175 | core/ReplaceComparisonOperator_Eq_Gt             | 06feb4b03b9c48b79b97c5fb1098cf45
+SURVIVED  | Line  175 | core/ReplaceComparisonOperator_Eq_GtE            | 0418b5cf297341b6b813d00ec3c6ad77
+SURVIVED  | Line  175 | core/ReplaceComparisonOperator_Eq_Is             | 291af393b18f4fb5b45a53c56353cddd
+SURVIVED  | Line  175 | core/ReplaceComparisonOperator_Eq_IsNot          | 9aa232e8822647daad63a3fdb54f377f
+SURVIVED  | Line  175 | core/ReplaceComparisonOperator_Eq_Lt             | e00e3608a4e649f988d8ebf29b76022a
+SURVIVED  | Line  175 | core/ReplaceComparisonOperator_Eq_LtE            | 885c17224fc8441590e22d1244dc7afb
+SURVIVED  | Line  175 | core/ReplaceComparisonOperator_Eq_NotEq          | 3bad14d9800644ab9c3d0213eee2f7c3
+SURVIVED  | Line  175 | core/ReplaceOrWithAnd                            | 9e5601129e81417c9de68d4e480ae888
+SURVIVED  | Line  175 | core/ReplaceUnaryOperator_Delete_Not             | a785a9af7a934bc5a0007730056c846a
+SURVIVED  | Line  176 | core/NumberReplacer                              | 1b769075e1b94f58bbc1fdbfdf027e4b
+SURVIVED  | Line  176 | core/NumberReplacer                              | db874a32bc76461ca69e975bf18a900c
+SURVIVED  | Line  177 | core/AddNot                                      | 51fd5fb6821d42d2aed9e6c5e0b07a86
+SURVIVED  | Line  177 | core/ReplaceUnaryOperator_Delete_Not             | 590a6a0f2e714f1c9779f40990d37066
+SURVIVED  | Line  178 | core/NumberReplacer                              | d4b0b2b3baa3496b8bd3af9390606630
+SURVIVED  | Line  178 | core/NumberReplacer                              | 8045ae0c0a9948118cf7ea0bcbbf12a3
+SURVIVED  | Line  180 | core/NumberReplacer                              | 76061b89ccac43d88feba15fad0f48ba
+SURVIVED  | Line  180 | core/NumberReplacer                              | cf58278f6dec4e02991fe95283339a8e
+SURVIVED  | Line  181 | core/NumberReplacer                              | 877ec2d75a2d4ed2b93c97853239bfc6
+SURVIVED  | Line  181 | core/NumberReplacer                              | 8eeb578aa75049caad20b4679faac0ec
+SURVIVED  | Line  183 | core/AddNot                                      | 5b4d093c71ea4657835d5de64204791a
+SURVIVED  | Line  183 | core/ReplaceComparisonOperator_NotEq_Eq          | b5ad00920839448ea5d9de2e954f821b
+SURVIVED  | Line  183 | core/ReplaceComparisonOperator_NotEq_Gt          | d5baefd8bb644a71bf5862028de1bed9
+SURVIVED  | Line  183 | core/ReplaceComparisonOperator_NotEq_GtE         | a51301bf9e144f3c86bcd57a20ee62e4
+SURVIVED  | Line  183 | core/ReplaceComparisonOperator_NotEq_Is          | f726f057c850436da096cfe6c46e5564
+SURVIVED  | Line  183 | core/ReplaceComparisonOperator_NotEq_IsNot       | 2b610e54f50843cd8edaa2c5580040e8
+SURVIVED  | Line  183 | core/ReplaceComparisonOperator_NotEq_Lt          | 8399e8cec60e4b9d9c515d5c4c395c00
+SURVIVED  | Line  183 | core/ReplaceComparisonOperator_NotEq_LtE         | 05c45993df1a41878b11f64a747fb9c0
+SURVIVED  | Line  184 | core/NumberReplacer                              | 93bd866235d04dc7b6a99d0b57f84604
+SURVIVED  | Line  184 | core/NumberReplacer                              | fc1c8d7b9752484b82057ca557ebee29
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Add               | ade1ec6d67a54aa6bd462b251919679b
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Add               | 1c47290c42444799b682f1ce47586886
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_BitAnd            | db8b22ed7d064158ac21de085805ef53
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_BitAnd            | 9f1b8c4d2fe845ed984b68319e5fb0e4
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_BitOr             | 93f3890af6ab44b3b39412b62d0c659a
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_BitOr             | 8d518ef9ff114a38aa409548dc95a86c
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_BitXor            | 07fae46c520743ba8aafb3b696c8a3b5
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_BitXor            | 9417b2d275954e90a9bbc71282de6238
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_FloorDiv          | f4051438959d4dcf98d51537f2c1850f
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_FloorDiv          | 50ee696bb6ca4491b621f9632b413305
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_LShift            | cff954cd5d75434fb7687908b75b8d8c
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_LShift            | 061ef6adaedc4dcb8d5ec27e0e3f689d
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Mod               | 25170c0e5ac346799cc0051eb3e68fee
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Mod               | 230d499cab7941ab8c89e4c1ccdb0f19
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Mul               | eb39d6888df04ecdaeadbf7c0bfd3ef6
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Mul               | 2981d7a001d04612a620ea2f38078eca
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Pow               | ea62bdfc871d4ef7b3c812d706b88188
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Pow               | 4ae315619dc14a5984d8304b1eb8d838
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_RShift            | f1f20b087498435d9d632b0ec7e2c33a
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_RShift            | cca96ca7dd7042fbb4fd329032967604
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Sub               | 1f073d3e7e574fd38fb45b2d13970a89
+SURVIVED  | Line  188 | core/ReplaceBinaryOperator_Div_Sub               | cd803491947941e7ae3fcb31228b161e
+SURVIVED  | Line  189 | core/ReplaceTrueWithFalse                        | 5b140288f3b444e8a388452f18f6ebeb
+SURVIVED  | Line  189 | core/ReplaceTrueWithFalse                        | ea2ca1308f8d4ed696c4180ac47c82ef
+SURVIVED  | Line  192 | core/ReplaceOrWithAnd                            | 48add6a8f9e2404d8a75d85f2995911d
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_Add               | 2c5a3e3a3b8f4587bcf0c661af5d3d52
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_BitAnd            | 8ff16ce58adb4ce1a672169cee9af257
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_BitOr             | 15d6012ca30c4b4d8492c26d3c53f78e
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_BitXor            | 11259f7946be424b8bf4990caadebd3f
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_FloorDiv          | 4354c65193cc41568392c573e9aa5217
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_LShift            | 21d49fa56ea946d5a82e8be1e5e5d27e
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_Mod               | 7f9b56cfc1f346379f337275cf4bcb32
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_Mul               | 77a2ba7f62df422cb9bf8c953b4366ac
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_Pow               | 1c87ffc943264486b46467aa2e8151bb
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_RShift            | 2ab3c5f3ec4c41b18f9cd3c2fa0d3e6d
+SURVIVED  | Line  194 | core/ReplaceBinaryOperator_Div_Sub               | e1fb5994e3804b4fb1125401e113a57f
+SURVIVED  | Line  224 | core/ExceptionReplacer                           | 16b944ce3aa6437ba8ca50eb67b1bddd
+SURVIVED  | Line  225 | core/NumberReplacer                              | 704bb1156dc242089e2ecb917d70fad4
+SURVIVED  | Line  225 | core/NumberReplacer                              | d1b45a203dae428587730aefe08b6d02
+SURVIVED  | Line  230 | core/AddNot                                      | 24aa433d539b4b62941d286f3cc9357f
+SURVIVED  | Line  233 | core/NumberReplacer                              | bc9e9e4fde18473d829c574a810c8421
+SURVIVED  | Line  233 | core/NumberReplacer                              | 78d2f46c364e407d983d2a0c70609cce
