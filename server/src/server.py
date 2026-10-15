@@ -1,4 +1,5 @@
 import os
+import secrets
 import io
 import hashlib
 import datetime as dt
@@ -109,7 +110,9 @@ def create_app():
     # POST /api/create-user {email, login, password}
     @app.post("/api/create-user")
     def create_user():
-        payload = request.get_json(silent=True) or {}
+        payload = request.get_json(silent=True)
+        if not isinstance(payload, dict):
+            return jsonify({"error": "JSON body must be an object"}), 400
         email = (payload.get("email") or "").strip().lower()
         login = (payload.get("login") or "").strip()
         password = payload.get("password") or ""
@@ -139,7 +142,9 @@ def create_app():
     # POST /api/login {login, password}
     @app.post("/api/login")
     def login():
-        payload = request.get_json(silent=True) or {}
+        payload = request.get_json(silent=True)
+        if not isinstance(payload, dict):
+            return jsonify({"error": "JSON body must be an object"}), 400
         email = (payload.get("email") or "").strip()
         password = payload.get("password") or ""
         if not email or not password:
@@ -169,6 +174,14 @@ def create_app():
         file = request.files["file"]
         if not file or file.filename == "":
             return jsonify({"error": "empty filename"}), 400
+        if not file.filename.lower().endswith(".pdf"):
+            return jsonify({"error": "only PDF files are allowed"}), 415
+
+        file_header = file.stream.read(5)
+        file.stream.seek(0)
+
+        if file_header != b"%PDF-":
+            return jsonify({"error": "invalid PDF file"}), 400
 
         fname = secure_filename(file.filename)
 
@@ -234,8 +247,10 @@ def create_app():
                     """),
                     {"uid": int(g.user["id"])},
                 ).all()
-        except Exception as e:
-            return jsonify({"error": f"database error: {str(e)}"}), 503
+        except Exception:
+            app.logger.exception("Failed to list documents")
+            return jsonify({"error": "database error"}), 503
+
 
         docs = [{
             "id": int(r.id),
@@ -445,6 +460,7 @@ def create_app():
     # DELETE /api/delete-document  (and variants)
     @app.route("/api/delete-document", methods=["DELETE", "POST"])  # POST supported for convenience
     @app.route("/api/delete-document/<document_id>", methods=["DELETE"])
+    @require_auth
     def delete_document(document_id: int | None = None):
         # accept id from path, query (?id= / ?documentid=), or JSON body on POST
         if not document_id:
@@ -482,6 +498,9 @@ def create_app():
             return jsonify({"error": "invalid document id"}), 400
 
         except Exception:
+            app.logger.exception(
+                "Database error while fetching document for deletion"
+            )
             return jsonify({"error": "database error"}), 503
 
         if not row:
@@ -635,8 +654,8 @@ def create_app():
         except Exception as e:
             return jsonify({"error": f"failed to write watermarked file: {e}"}), 500
 
-        # link token = sha1(watermarked_file_name)
-        link_token = hashlib.sha1(candidate.encode("utf-8")).hexdigest()
+        # Generate an unpredictable public download token
+        link_token = secrets.token_hex(32)
 
         try:
             with get_engine().begin() as conn:
@@ -779,6 +798,10 @@ def create_app():
     "./keys/clients")
 
     app.config["RMAP_PASSPHRASE"] = os.environ.get("RMAP_PASSPHRASE") or None
+    app.config["RMAP_ASSIGNED_PDF"] = os.environ.get(
+        "RMAP_ASSIGNED_PDF",
+        "/app/assigned/Group_4.pdf",
+    )
 
     _rmap_server = None
 
@@ -829,8 +852,101 @@ def create_app():
 
         try:
             rmap_server = get_rmap_server()
-
             identity, link, response = rmap_server.receiveMsg2(payload)
+
+            source_path = Path(app.config["RMAP_ASSIGNED_PDF"]).resolve()
+
+            if not source_path.is_file():
+                raise RuntimeError("Assigned RMAP PDF is missing")
+
+            with get_engine().connect() as conn:
+                document = conn.execute(
+                    text("""
+                        SELECT id, name
+                        FROM Documents
+                        WHERE path = :path
+                        LIMIT 1
+                    """),
+                    {"path": str(source_path)},
+                ).first()
+
+            if document is None:
+                raise RuntimeError(
+                    "Assigned RMAP PDF is not registered in Documents"
+                )
+
+            document_id = int(document.id)
+            secret = link
+            key = app.config["SECRET_KEY"]
+            watermarked = source_path.read_bytes()
+
+            methods = (
+                "metadata-hmac",
+                "visible-repeat",
+                "hidden-object",
+            )
+
+            for method in methods:
+                if not WMUtils.is_watermarking_applicable(
+                    method=method,
+                    pdf=watermarked,
+                    position=None,
+                ):
+                    raise RuntimeError(
+                        f"Watermarking method not applicable: {method}"
+                    )
+
+                watermarked = WMUtils.apply_watermark(
+                    method=method,
+                    pdf=watermarked,
+                    secret=secret,
+                    key=key,
+                    position=None,
+                )
+
+            if not isinstance(watermarked, (bytes, bytearray)) or not watermarked:
+                raise RuntimeError("Watermarking produced no output")
+
+            dest_dir = Path(app.config["STORAGE_DIR"]) / "rmap"
+            dest_dir.mkdir(parents=True, exist_ok=True)
+
+            identity_slug = secure_filename(identity) or "recipient"
+            candidate = f"Group_4__{identity_slug}__{link}.pdf"
+            dest_path = dest_dir / candidate
+
+            with dest_path.open("xb") as f:
+                f.write(watermarked)
+
+            try:
+                with get_engine().begin() as conn:
+                    conn.execute(
+                        text("""
+                            INSERT INTO Versions
+                                (documentid, link, intended_for, secret,
+                                 method, position, path)
+                            VALUES
+                                (:documentid, :link, :intended_for, :secret,
+                                 :method, :position, :path)
+                        """),
+                        {
+                            "documentid": document_id,
+                            "link": link,
+                            "intended_for": identity,
+                            "secret": secret,
+                            "method": "combined",
+                            "position": "",
+                            "path": str(dest_path),
+                        },
+                    )
+            except Exception:
+                dest_path.unlink(missing_ok=True)
+                raise
+
+            app.logger.info(
+                "Created RMAP version for identity '%s' with link %s",
+                identity,
+                link,
+            )
 
             return jsonify(response), 200
 

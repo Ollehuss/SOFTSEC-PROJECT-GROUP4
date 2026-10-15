@@ -205,13 +205,22 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-<<<<<<< HEAD
+
 flag
 
 .idea/
-=======
 
 # RMAP private keys
 keys/server_priv.asc
 keys/*_priv.asc
->>>>>>> olles
+
+# Mutation testing (individual specialization B)
+server/mutants/
+
+# Local mutation testing output and evidence
+server/mutation-diffs-visible-repeat.txt
+server/mutation-results-visible-repeat.txt
+server/requirements-before-mutation.txt
+
+# macOS metadata
+.DS_Store
