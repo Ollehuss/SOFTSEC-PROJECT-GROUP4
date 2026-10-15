@@ -1,0 +1,81 @@
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁget_usage__mutmut_1: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁget_usage__mutmut_2: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁget_usage__mutmut_3: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_1: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_2: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_3: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_4: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_5: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_6: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_7: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_8: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_9: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_10: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_11: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁis_watermark_applicable__mutmut_12: no tests
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_2: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_3: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_4: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_5: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_7: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_8: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_9: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_10: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_15: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_17: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_18: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_19: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_29: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_32: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_38: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_39: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_40: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_41: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_42: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_43: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_44: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_45: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_46: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_47: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_48: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_49: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_50: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_51: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_52: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_53: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_57: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_61: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_62: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_63: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_64: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_68: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_2: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_3: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_4: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_5: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_10: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_12: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_13: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_14: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_19: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_20: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_30: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_31: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_32: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_36: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_41: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_42: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_44: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_50: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_52: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_53: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_63: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_66: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_72: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_73: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_74: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_75: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_76: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_77: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_78: survived
+    visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_79: survived

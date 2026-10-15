@@ -218,9 +218,16 @@ keys/*_priv.asc
 server/mutants/
 
 # Local mutation testing output and evidence
-server/mutation-diffs-visible-repeat.txt
-server/mutation-results-visible-repeat.txt
 server/requirements-before-mutation.txt
 
 # macOS metadata
 .DS_Store
+
+# Cosmic Ray generated experiment databases
+server/cosmic-ray-*.sqlite
+
+# Local mutation experiment data
+server/cosmic-ray-api-initial.json
+
+# Local editor configuration
+.vscode/

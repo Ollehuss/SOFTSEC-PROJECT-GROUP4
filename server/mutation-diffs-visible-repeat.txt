@@ -1,0 +1,1034 @@
+
+======================================================================
+MUTANT 1/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_2
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_2: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -7,7 +7,7 @@
+ ) -> bytes:
+ 
+     if not secret:
+-        raise ValueError("Secret can not be empty")
++        raise ValueError(None)
+        
+     if not key:
+         raise ValueError("Key can not be empty")
+
+======================================================================
+MUTANT 2/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_3
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_3: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -7,7 +7,7 @@
+ ) -> bytes:
+ 
+     if not secret:
+-        raise ValueError("Secret can not be empty")
++        raise ValueError("XXSecret can not be emptyXX")
+        
+     if not key:
+         raise ValueError("Key can not be empty")
+
+======================================================================
+MUTANT 3/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_4
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_4: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -7,7 +7,7 @@
+ ) -> bytes:
+ 
+     if not secret:
+-        raise ValueError("Secret can not be empty")
++        raise ValueError("secret can not be empty")
+        
+     if not key:
+         raise ValueError("Key can not be empty")
+
+======================================================================
+MUTANT 4/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_5
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_5: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -7,7 +7,7 @@
+ ) -> bytes:
+ 
+     if not secret:
+-        raise ValueError("Secret can not be empty")
++        raise ValueError("SECRET CAN NOT BE EMPTY")
+        
+     if not key:
+         raise ValueError("Key can not be empty")
+
+======================================================================
+MUTANT 5/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_7
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_7: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -10,7 +10,7 @@
+         raise ValueError("Secret can not be empty")
+        
+     if not key:
+-        raise ValueError("Key can not be empty")
++        raise ValueError(None)
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+
+======================================================================
+MUTANT 6/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_8
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_8: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -10,7 +10,7 @@
+         raise ValueError("Secret can not be empty")
+        
+     if not key:
+-        raise ValueError("Key can not be empty")
++        raise ValueError("XXKey can not be emptyXX")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+
+======================================================================
+MUTANT 7/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_9
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_9: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -10,7 +10,7 @@
+         raise ValueError("Secret can not be empty")
+        
+     if not key:
+-        raise ValueError("Key can not be empty")
++        raise ValueError("key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+
+======================================================================
+MUTANT 8/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_10
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_10: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -10,7 +10,7 @@
+         raise ValueError("Secret can not be empty")
+        
+     if not key:
+-        raise ValueError("Key can not be empty")
++        raise ValueError("KEY CAN NOT BE EMPTY")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+
+======================================================================
+MUTANT 9/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_15
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_15: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -13,7 +13,7 @@
+         raise ValueError("Key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
++    doc = pymupdf.open(stream=pdf_bytes, filetype=None)
+ 
+     tag = hmac.new(
+         key.encode("utf-8"),
+
+======================================================================
+MUTANT 10/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_17
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_17: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -13,7 +13,7 @@
+         raise ValueError("Key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
++    doc = pymupdf.open(stream=pdf_bytes, )
+ 
+     tag = hmac.new(
+         key.encode("utf-8"),
+
+======================================================================
+MUTANT 11/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_18
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_18: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -13,7 +13,7 @@
+         raise ValueError("Key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
++    doc = pymupdf.open(stream=pdf_bytes, filetype="XXpdfXX")
+ 
+     tag = hmac.new(
+         key.encode("utf-8"),
+
+======================================================================
+MUTANT 12/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_19
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_19: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -13,7 +13,7 @@
+         raise ValueError("Key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
++    doc = pymupdf.open(stream=pdf_bytes, filetype="PDF")
+ 
+     tag = hmac.new(
+         key.encode("utf-8"),
+
+======================================================================
+MUTANT 13/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_29
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_29: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -16,7 +16,7 @@
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+ 
+     tag = hmac.new(
+-        key.encode("utf-8"),
++        key.encode("UTF-8"),
+         secret.encode("utf-8"),
+         hashlib.sha256,
+     ).hexdigest()[:8]
+
+======================================================================
+MUTANT 14/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_32
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_32: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -17,7 +17,7 @@
+ 
+     tag = hmac.new(
+         key.encode("utf-8"),
+-        secret.encode("utf-8"),
++        secret.encode("UTF-8"),
+         hashlib.sha256,
+     ).hexdigest()[:8]
+ 
+
+======================================================================
+MUTANT 15/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_38
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_38: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -28,7 +28,7 @@
+         height = page.rect.height
+ 
+         positions = [
+-            (width * 0.15, height * 0.15),
++            (width / 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+
+======================================================================
+MUTANT 16/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_39
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_39: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -28,7 +28,7 @@
+         height = page.rect.height
+ 
+         positions = [
+-            (width * 0.15, height * 0.15),
++            (width * 1.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+
+======================================================================
+MUTANT 17/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_40
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_40: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -28,7 +28,7 @@
+         height = page.rect.height
+ 
+         positions = [
+-            (width * 0.15, height * 0.15),
++            (width * 0.15, height / 0.15),
+             (width * 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+
+======================================================================
+MUTANT 18/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_41
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_41: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -28,7 +28,7 @@
+         height = page.rect.height
+ 
+         positions = [
+-            (width * 0.15, height * 0.15),
++            (width * 0.15, height * 1.15),
+             (width * 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+
+======================================================================
+MUTANT 19/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_42
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_42: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -29,7 +29,7 @@
+ 
+         positions = [
+             (width * 0.15, height * 0.15),
+-            (width * 0.50, height * 0.35),
++            (width / 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+ 
+
+======================================================================
+MUTANT 20/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_43
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_43: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -29,7 +29,7 @@
+ 
+         positions = [
+             (width * 0.15, height * 0.15),
+-            (width * 0.50, height * 0.35),
++            (width * 1.5, height * 0.35),
+             (width * 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+ 
+
+======================================================================
+MUTANT 21/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_44
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_44: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -29,7 +29,7 @@
+ 
+         positions = [
+             (width * 0.15, height * 0.15),
+-            (width * 0.50, height * 0.35),
++            (width * 0.50, height / 0.35),
+             (width * 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+ 
+
+======================================================================
+MUTANT 22/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_45
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_45: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -29,7 +29,7 @@
+ 
+         positions = [
+             (width * 0.15, height * 0.15),
+-            (width * 0.50, height * 0.35),
++            (width * 0.50, height * 1.35),
+             (width * 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+ 
+
+======================================================================
+MUTANT 23/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_46
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_46: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -30,7 +30,7 @@
+         positions = [
+             (width * 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+-            (width * 0.15, height * 0.60),
++            (width / 0.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+ 
+         for position in positions:
+
+======================================================================
+MUTANT 24/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_47
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_47: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -30,7 +30,7 @@
+         positions = [
+             (width * 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+-            (width * 0.15, height * 0.60),
++            (width * 1.15, height * 0.60),
+             (width * 0.40, height * 0.80),]
+ 
+         for position in positions:
+
+======================================================================
+MUTANT 25/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_48
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_48: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -30,7 +30,7 @@
+         positions = [
+             (width * 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+-            (width * 0.15, height * 0.60),
++            (width * 0.15, height / 0.60),
+             (width * 0.40, height * 0.80),]
+ 
+         for position in positions:
+
+======================================================================
+MUTANT 26/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_49
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_49: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -30,7 +30,7 @@
+         positions = [
+             (width * 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+-            (width * 0.15, height * 0.60),
++            (width * 0.15, height * 1.6),
+             (width * 0.40, height * 0.80),]
+ 
+         for position in positions:
+
+======================================================================
+MUTANT 27/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_50
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_50: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -31,7 +31,7 @@
+             (width * 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+-            (width * 0.40, height * 0.80),]
++            (width / 0.40, height * 0.80),]
+ 
+         for position in positions:
+             page.insert_text(
+
+======================================================================
+MUTANT 28/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_51
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_51: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -31,7 +31,7 @@
+             (width * 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+-            (width * 0.40, height * 0.80),]
++            (width * 1.4, height * 0.80),]
+ 
+         for position in positions:
+             page.insert_text(
+
+======================================================================
+MUTANT 29/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_52
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_52: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -31,7 +31,7 @@
+             (width * 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+-            (width * 0.40, height * 0.80),]
++            (width * 0.40, height / 0.80),]
+ 
+         for position in positions:
+             page.insert_text(
+
+======================================================================
+MUTANT 30/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_53
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_53: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -31,7 +31,7 @@
+             (width * 0.15, height * 0.15),
+             (width * 0.50, height * 0.35),
+             (width * 0.15, height * 0.60),
+-            (width * 0.40, height * 0.80),]
++            (width * 0.40, height * 1.8),]
+ 
+         for position in positions:
+             page.insert_text(
+
+======================================================================
+MUTANT 31/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_57
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_57: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -37,7 +37,7 @@
+             page.insert_text(
+                 position, watermark_text, 
+                 fontsize=16, 
+-                color=(0.5, 0.5, 0.5), 
++                color=None, 
+                 fill_opacity=0.3)
+ 
+     result = doc.tobytes()
+
+======================================================================
+MUTANT 32/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_61
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_61: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -36,7 +36,6 @@
+         for position in positions:
+             page.insert_text(
+                 position, watermark_text, 
+-                fontsize=16, 
+                 color=(0.5, 0.5, 0.5), 
+                 fill_opacity=0.3)
+ 
+
+======================================================================
+MUTANT 33/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_62
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_62: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -37,7 +37,6 @@
+             page.insert_text(
+                 position, watermark_text, 
+                 fontsize=16, 
+-                color=(0.5, 0.5, 0.5), 
+                 fill_opacity=0.3)
+ 
+     result = doc.tobytes()
+
+======================================================================
+MUTANT 34/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_63
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_63: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -38,7 +38,7 @@
+                 position, watermark_text, 
+                 fontsize=16, 
+                 color=(0.5, 0.5, 0.5), 
+-                fill_opacity=0.3)
++                )
+ 
+     result = doc.tobytes()
+     doc.close()
+
+======================================================================
+MUTANT 35/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_64
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_64: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -36,7 +36,7 @@
+         for position in positions:
+             page.insert_text(
+                 position, watermark_text, 
+-                fontsize=16, 
++                fontsize=17, 
+                 color=(0.5, 0.5, 0.5), 
+                 fill_opacity=0.3)
+ 
+
+======================================================================
+MUTANT 36/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_68
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁadd_watermark__mutmut_68: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -38,7 +38,7 @@
+                 position, watermark_text, 
+                 fontsize=16, 
+                 color=(0.5, 0.5, 0.5), 
+-                fill_opacity=0.3)
++                fill_opacity=1.3)
+ 
+     result = doc.tobytes()
+     doc.close()
+
+======================================================================
+MUTANT 37/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_2
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_2: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -1,6 +1,6 @@
+ def read_secret(self, pdf:PdfSource, key:str) -> str:
+     if not key:
+-        raise InvalidKeyError("Key can not be empty")
++        raise InvalidKeyError(None)
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+
+======================================================================
+MUTANT 38/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_3
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_3: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -1,6 +1,6 @@
+ def read_secret(self, pdf:PdfSource, key:str) -> str:
+     if not key:
+-        raise InvalidKeyError("Key can not be empty")
++        raise InvalidKeyError("XXKey can not be emptyXX")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+
+======================================================================
+MUTANT 39/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_4
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_4: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -1,6 +1,6 @@
+ def read_secret(self, pdf:PdfSource, key:str) -> str:
+     if not key:
+-        raise InvalidKeyError("Key can not be empty")
++        raise InvalidKeyError("key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+
+======================================================================
+MUTANT 40/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_5
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_5: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -1,6 +1,6 @@
+ def read_secret(self, pdf:PdfSource, key:str) -> str:
+     if not key:
+-        raise InvalidKeyError("Key can not be empty")
++        raise InvalidKeyError("KEY CAN NOT BE EMPTY")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+
+======================================================================
+MUTANT 41/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_10
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_10: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -3,7 +3,7 @@
+         raise InvalidKeyError("Key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
++    doc = pymupdf.open(stream=pdf_bytes, filetype=None)
+ 
+     marker = "TATOU-watermark:"
+     watermark_found = False
+
+======================================================================
+MUTANT 42/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_12
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_12: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -3,7 +3,7 @@
+         raise InvalidKeyError("Key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
++    doc = pymupdf.open(stream=pdf_bytes, )
+ 
+     marker = "TATOU-watermark:"
+     watermark_found = False
+
+======================================================================
+MUTANT 43/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_13
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_13: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -3,7 +3,7 @@
+         raise InvalidKeyError("Key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
++    doc = pymupdf.open(stream=pdf_bytes, filetype="XXpdfXX")
+ 
+     marker = "TATOU-watermark:"
+     watermark_found = False
+
+======================================================================
+MUTANT 44/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_14
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_14: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -3,7 +3,7 @@
+         raise InvalidKeyError("Key can not be empty")
+ 
+     pdf_bytes = load_pdf_bytes(pdf)
+-    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
++    doc = pymupdf.open(stream=pdf_bytes, filetype="PDF")
+ 
+     marker = "TATOU-watermark:"
+     watermark_found = False
+
+======================================================================
+MUTANT 45/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_19
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_19: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -6,7 +6,7 @@
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+ 
+     marker = "TATOU-watermark:"
+-    watermark_found = False
++    watermark_found = None
+ 
+     try:
+         for page in doc:
+
+======================================================================
+MUTANT 46/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_20
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_20: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -6,7 +6,7 @@
+     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
+ 
+     marker = "TATOU-watermark:"
+-    watermark_found = False
++    watermark_found = True
+ 
+     try:
+         for page in doc:
+
+======================================================================
+MUTANT 47/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_30
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_30: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -17,7 +17,7 @@
+                     continue
+ 
+                 watermark_found = True
+-                watermark_data = line.split(marker, 1)[1].strip()
++                watermark_data = line.split(marker, )[1].strip()
+ 
+                 if ":" not in watermark_data:
+                     continue
+
+======================================================================
+MUTANT 48/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_31
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_31: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -17,7 +17,7 @@
+                     continue
+ 
+                 watermark_found = True
+-                watermark_data = line.split(marker, 1)[1].strip()
++                watermark_data = line.rsplit(marker, 1)[1].strip()
+ 
+                 if ":" not in watermark_data:
+                     continue
+
+======================================================================
+MUTANT 49/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_32
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_32: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -17,7 +17,7 @@
+                     continue
+ 
+                 watermark_found = True
+-                watermark_data = line.split(marker, 1)[1].strip()
++                watermark_data = line.split(marker, 2)[1].strip()
+ 
+                 if ":" not in watermark_data:
+                     continue
+
+======================================================================
+MUTANT 50/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_36
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_36: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -20,7 +20,7 @@
+                 watermark_data = line.split(marker, 1)[1].strip()
+ 
+                 if ":" not in watermark_data:
+-                    continue
++                    break
+ 
+                 secret, tag = watermark_data.rsplit(":", 1)
+ 
+
+======================================================================
+MUTANT 51/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_41
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_41: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -22,7 +22,7 @@
+                 if ":" not in watermark_data:
+                     continue
+ 
+-                secret, tag = watermark_data.rsplit(":", 1)
++                secret, tag = watermark_data.rsplit(":", )
+ 
+                 if len(tag) != 8:
+                     continue
+
+======================================================================
+MUTANT 52/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_42
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_42: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -22,7 +22,7 @@
+                 if ":" not in watermark_data:
+                     continue
+ 
+-                secret, tag = watermark_data.rsplit(":", 1)
++                secret, tag = watermark_data.split(":", 1)
+ 
+                 if len(tag) != 8:
+                     continue
+
+======================================================================
+MUTANT 53/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_44
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_44: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -22,7 +22,7 @@
+                 if ":" not in watermark_data:
+                     continue
+ 
+-                secret, tag = watermark_data.rsplit(":", 1)
++                secret, tag = watermark_data.rsplit(":", 2)
+ 
+                 if len(tag) != 8:
+                     continue
+
+======================================================================
+MUTANT 54/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_50
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_50: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -27,7 +27,7 @@
+                 if len(tag) != 8:
+                     continue
+                 try:
+-                    int(tag, 16)
++                    int(16)
+                 except ValueError:
+                     continue
+ 
+
+======================================================================
+MUTANT 55/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_52
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_52: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -27,7 +27,7 @@
+                 if len(tag) != 8:
+                     continue
+                 try:
+-                    int(tag, 16)
++                    int(tag, 17)
+                 except ValueError:
+                     continue
+ 
+
+======================================================================
+MUTANT 56/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_53
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_53: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -29,7 +29,7 @@
+                 try:
+                     int(tag, 16)
+                 except ValueError:
+-                    continue
++                    break
+ 
+                 expected_tag = hmac.new(key.encode ("utf-8"),
+                                         secret.encode("utf-8"),
+
+======================================================================
+MUTANT 57/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_63
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_63: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -31,7 +31,7 @@
+                 except ValueError:
+                     continue
+ 
+-                expected_tag = hmac.new(key.encode ("utf-8"),
++                expected_tag = hmac.new(key.encode ("UTF-8"),
+                                         secret.encode("utf-8"),
+                                         hashlib.sha256
+                                         ).hexdigest()[:8]
+
+======================================================================
+MUTANT 58/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_66
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_66: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -32,7 +32,7 @@
+                     continue
+ 
+                 expected_tag = hmac.new(key.encode ("utf-8"),
+-                                        secret.encode("utf-8"),
++                                        secret.encode("UTF-8"),
+                                         hashlib.sha256
+                                         ).hexdigest()[:8]
+ 
+
+======================================================================
+MUTANT 59/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_72
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_72: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -43,6 +43,6 @@
+         doc.close()
+ 
+     if watermark_found:
+-        raise InvalidKeyError("Invalid key or modified watermark")
++        raise InvalidKeyError(None)
+ 
+     raise SecretNotFoundError("Visible watermark not found")
+
+======================================================================
+MUTANT 60/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_73
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_73: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -43,6 +43,6 @@
+         doc.close()
+ 
+     if watermark_found:
+-        raise InvalidKeyError("Invalid key or modified watermark")
++        raise InvalidKeyError("XXInvalid key or modified watermarkXX")
+ 
+     raise SecretNotFoundError("Visible watermark not found")
+
+======================================================================
+MUTANT 61/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_74
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_74: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -43,6 +43,6 @@
+         doc.close()
+ 
+     if watermark_found:
+-        raise InvalidKeyError("Invalid key or modified watermark")
++        raise InvalidKeyError("invalid key or modified watermark")
+ 
+     raise SecretNotFoundError("Visible watermark not found")
+
+======================================================================
+MUTANT 62/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_75
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_75: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -43,6 +43,6 @@
+         doc.close()
+ 
+     if watermark_found:
+-        raise InvalidKeyError("Invalid key or modified watermark")
++        raise InvalidKeyError("INVALID KEY OR MODIFIED WATERMARK")
+ 
+     raise SecretNotFoundError("Visible watermark not found")
+
+======================================================================
+MUTANT 63/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_76
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_76: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -45,4 +45,4 @@
+     if watermark_found:
+         raise InvalidKeyError("Invalid key or modified watermark")
+ 
+-    raise SecretNotFoundError("Visible watermark not found")
++    raise SecretNotFoundError(None)
+
+======================================================================
+MUTANT 64/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_77
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_77: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -45,4 +45,4 @@
+     if watermark_found:
+         raise InvalidKeyError("Invalid key or modified watermark")
+ 
+-    raise SecretNotFoundError("Visible watermark not found")
++    raise SecretNotFoundError("XXVisible watermark not foundXX")
+
+======================================================================
+MUTANT 65/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_78
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_78: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -45,4 +45,4 @@
+     if watermark_found:
+         raise InvalidKeyError("Invalid key or modified watermark")
+ 
+-    raise SecretNotFoundError("Visible watermark not found")
++    raise SecretNotFoundError("visible watermark not found")
+
+======================================================================
+MUTANT 66/66: visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_79
+======================================================================
+# visible_repeat_watermark.xǁVisibleRepeatWatermarkǁread_secret__mutmut_79: survived
+--- src/visible_repeat_watermark.py
++++ src/visible_repeat_watermark.py
+@@ -45,4 +45,4 @@
+     if watermark_found:
+         raise InvalidKeyError("Invalid key or modified watermark")
+ 
+-    raise SecretNotFoundError("Visible watermark not found")
++    raise SecretNotFoundError("VISIBLE WATERMARK NOT FOUND")
