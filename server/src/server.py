@@ -174,6 +174,14 @@ def create_app():
         file = request.files["file"]
         if not file or file.filename == "":
             return jsonify({"error": "empty filename"}), 400
+        if not file.filename.lower().endswith(".pdf"):
+            return jsonify({"error": "only PDF files are allowed"}), 415
+
+        file_header = file.stream.read(5)
+        file.stream.seek(0)
+
+        if file_header != b"%PDF-":
+            return jsonify({"error": "invalid PDF file"}), 400
 
         fname = secure_filename(file.filename)
 

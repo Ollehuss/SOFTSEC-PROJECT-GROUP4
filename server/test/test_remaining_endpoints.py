@@ -1,5 +1,7 @@
 import io
 import os
+import server
+from sqlalchemy import create_engine, text
 
 import pytest
 from itsdangerous import URLSafeTimedSerializer
@@ -7,9 +9,51 @@ from server import app
 
 
 @pytest.fixture
-def client():
-    return app.test_client()
+def client(monkeypatch, tmp_path):
+    engine = create_engine(f"sqlite:///{tmp_path / 'test.db'}")
 
+    with engine.begin() as conn:
+        conn.execute(text("""
+            CREATE TABLE Users (
+                id INTEGER PRIMARY KEY,
+                login TEXT NOT NULL,
+                email TEXT
+            )
+        """))
+
+        conn.execute(text("""
+            CREATE TABLE Documents (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                path TEXT,
+                creation TEXT DEFAULT CURRENT_TIMESTAMP,
+                sha256 BLOB,
+                size INTEGER,
+                ownerid INTEGER
+            )
+        """))
+
+        conn.execute(text("""
+            CREATE TABLE Versions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                documentid INTEGER,
+                link TEXT,
+                intended_for TEXT,
+                secret TEXT,
+                method TEXT
+            )
+        """))
+
+        conn.execute(text("""
+            INSERT INTO Users (id, login, email)
+            VALUES (1, 'test-user', 'test@example.com')
+        """))
+
+    monkeypatch.setitem(app.config, "_ENGINE", engine)
+
+    yield app.test_client()
+
+    engine.dispose()
 
 @pytest.fixture
 def auth_headers():
