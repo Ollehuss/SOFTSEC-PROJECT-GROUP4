@@ -118,7 +118,7 @@ def test_list_versions_without_authentication(client):
 
 def test_list_versions_with_authentication(client, auth_headers):
     response = client.get(
-        "/api/list-versions",
+        "/api/list-versions/1",
         headers=auth_headers,
     )
     assert response.status_code == 200
