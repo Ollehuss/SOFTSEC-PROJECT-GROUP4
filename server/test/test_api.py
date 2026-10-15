@@ -5,6 +5,8 @@ import pytest
 from server import app
 import os
 from itsdangerous import URLSafeTimedSerializer
+from types import SimpleNamespace
+from unittest.mock import MagicMock
 
 def test_healthz_route():
     client = app.test_client()
@@ -53,6 +55,114 @@ def test_delete_document_requires_authentication():
     resp = client.post("/api/delete-document?id=1")
     assert resp.status_code == 401
 
+
+def test_delete_document_success(tmp_path, monkeypatch):
+    pdf_file = tmp_path / "test.pdf"
+    pdf_file.write_bytes(b"%PDF-1.4 test document")
+
+    assert pdf_file.exists()
+
+    document = SimpleNamespace(
+        id=1,
+        path=str(pdf_file),
+    )
+
+    mock_conn = MagicMock()
+    mock_conn.execute.return_value.first.return_value = document
+
+    mock_engine = MagicMock()
+    mock_engine.connect.return_value.__enter__.return_value = mock_conn
+    mock_engine.begin.return_value.__enter__.return_value = mock_conn
+
+    monkeypatch.setitem(app.config, "_ENGINE", mock_engine)
+
+    monkeypatch.setitem(app.config, "STORAGE_DIR", tmp_path)
+
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+    response = client.delete(
+        "/api/delete-document/1",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+    assert data["deleted"] is True
+    assert data["id"] == 1
+    assert data["file_deleted"] is True
+    assert data["file_missing"] is False
+
+    assert not pdf_file.exists()
+
+    queries = [
+        str(call.args[0])
+        for call in mock_conn.execute.call_args_list
+    ]
+
+    assert any(
+        "DELETE FROM Documents" in query
+        for query in queries
+    )
+
+
+def test_delete_document_other_user(monkeypatch, tmp_path):
+
+    pdf_file = tmp_path / "other_user.pdf"
+    pdf_file.write_bytes(b"%PDF-1.4 private document")
+
+    mock_conn = MagicMock()
+    mock_conn.execute.return_value.first.return_value = None
+
+    mock_engine = MagicMock()
+    mock_engine.connect.return_value.__enter__.return_value = mock_conn
+    mock_engine.begin.return_value.__enter__.return_value = mock_conn
+
+    monkeypatch.setitem(app.config, "_ENGINE", mock_engine)
+    monkeypatch.setitem(app.config, "STORAGE_DIR", tmp_path)
+
+    serializer = URLSafeTimedSerializer(
+        app.config["SECRET_KEY"],
+        salt="tatou-auth",
+    )
+
+    token = serializer.dumps({
+        "uid": 1,
+        "login": "test-user",
+        "email": "test@example.com",
+    })
+
+    client = app.test_client()
+
+    response = client.delete(
+        "/api/delete-document/2",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 404
+    assert response.get_json()["error"] == "document not found"
+
+    assert pdf_file.exists()
+
+    query_call = mock_conn.execute.call_args_list[0]
+    query = str(query_call.args[0])
+    params = query_call.args[1]
+
+    assert "ownerid = :uid" in query
+    assert params["id"] == 2
+    assert params["uid"] == 1
+
+    mock_engine.begin.assert_not_called()
 
 @pytest.mark.parametrize(
     ("method", "path"),
