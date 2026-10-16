@@ -1,15 +1,13 @@
 import re
 import secrets
+import uuid
 from urllib import response
 import pytest
-from server import app
+from server import app, create_app
 import os
 from itsdangerous import URLSafeTimedSerializer
 from types import SimpleNamespace
-import os
-from itsdangerous import URLSafeTimedSerializer
-from types import SimpleNamespace
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from sqlalchemy.exc import IntegrityError
 
 
@@ -835,3 +833,82 @@ def test_get_document_file_missing(tmp_path, monkeypatch):
 
     assert response.status_code == 410
     assert response.get_json()["error"] == "file missing on disk"
+
+
+def test_rmap_initiate_success():
+    fake_server = MagicMock()
+    fake_server.receiveMsg1.return_value = (
+        "test-identity",
+        {"message": "ok"},
+    )
+
+    with patch("server.RMAPServer", return_value=fake_server):
+        client = create_app().test_client()
+
+        response = client.post(
+            "/api/rmap-initiate",
+            json={"message": "test"},
+        )
+
+    assert response.status_code == 200
+    assert response.get_json() == {"message": "ok"}
+    fake_server.receiveMsg1.assert_called_once_with(
+        {"message": "test"}
+    )
+
+
+def test_rmap_initiate_unexpected_error():
+    fake_server = MagicMock()
+    fake_server.receiveMsg1.side_effect = RuntimeError(
+        "Test error"
+    )
+
+    with patch("server.RMAPServer", return_value=fake_server):
+        client = create_app().test_client()
+
+        response = client.post(
+            "/api/rmap-initiate",
+            json={"message": "test"},
+        )
+
+    assert response.status_code == 500
+    assert response.get_json() == {
+        "error": "RMAP initiation failed"
+    }
+
+def test_rmap_get_link_success(monkeypatch, tmp_path):
+    source = tmp_path / "assigned.pdf"
+    source.write_bytes(b"%PDF-1.4\nassigned\n")
+    fake_server = MagicMock()
+    fake_server.receiveMsg2.return_value = ("Alice", "link123", {"message": "ok"})
+    conn = MagicMock()
+    conn.execute.return_value.first.return_value = SimpleNamespace(id=42, name="assigned.pdf")
+    engine = MagicMock()
+    engine.connect.return_value.__enter__.return_value = conn
+    engine.begin.return_value.__enter__.return_value = conn
+    with patch("server.RMAPServer", return_value=fake_server), \
+         patch("server.WMUtils.is_watermarking_applicable", return_value=True) as applicable, \
+         patch("server.WMUtils.apply_watermark", side_effect=lambda **kwargs: kwargs["pdf"] + b"\nmarked") as apply:
+        test_app = create_app()
+        test_app.config.update(_ENGINE=engine, STORAGE_DIR=tmp_path, RMAP_ASSIGNED_PDF=str(source))
+        response = test_app.test_client().post("/api/rmap-get-link", json={"message": "test"})
+    assert response.status_code == 200, response.get_json()
+    assert response.get_json() == {"message": "ok"}
+    output = tmp_path / "rmap" / "Group_4__Alice__link123.pdf"
+    assert output.exists()
+    assert output.read_bytes().endswith(b"\nmarked\nmarked\nmarked")
+    assert applicable.call_count == 3
+    assert apply.call_count == 3
+    assert any("insert into versions" in str(c.args[0]).lower() for c in conn.execute.call_args_list)
+
+
+def test_rmap_get_link_missing_assigned_pdf(monkeypatch, tmp_path):
+    fake_server = MagicMock()
+    fake_server.receiveMsg2.return_value = ("Alice", "link123", {"message": "ok"})
+    with patch("server.RMAPServer", return_value=fake_server):
+        test_app = create_app()
+        test_app.config.update(RMAP_ASSIGNED_PDF=str(tmp_path / "nonexistent.pdf"), STORAGE_DIR=tmp_path)
+        response = test_app.test_client().post("/api/rmap-get-link", json={"message": "test"})
+    assert response.status_code == 500
+    assert response.get_json() == {"error": "RMAP get-link failed"}
+
